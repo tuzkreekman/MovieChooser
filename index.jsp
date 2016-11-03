@@ -59,6 +59,26 @@
   input[type=select] {
     font-family: 'Corben', Georgia, Times, serif;
   }
+  input[type=search] {
+    width: 130px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-image: url('searchicon.gif');
+	background-size: 30px 30px;
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    padding: 14px 0px 0px 30px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+	font-family: 'Corben', Georgia, Times, serif;
+  }
+
+  input[type=search]:focus {
+    width: 100%;
+  }
 
   </style>
   <body style="background-color:#E6E6FA">
@@ -75,6 +95,11 @@
   
     <li><a href="index.jsp">Index</a></li>
   </ul>
+  
+  <form action = "search.jsp" method="get" style="float:right">
+		<input type="search" name="q">
+  </form>
+  <br><br><br>
 
 
   <h1>Welcome to MovieChooser!</h1>
