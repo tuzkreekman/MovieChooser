@@ -100,32 +100,15 @@ public class TVTropeLoader {
 				String saving = "";
 				if (c==(int)'<') {
 					while ((c != (int)'>') && c!=-1) {
-						if ((c=is.read()) ==(int)'h') 
-							if ((c=is.read()) ==(int)'r') 
-								if ((c=is.read()) ==(int)' ') 
-									if ((c=is.read()) ==(int)'/')
-										if ((c=is.read()) ==(int)'>') {
-											c = -2;
-											break;
-										}
+						if ((c=lookForEnding(is))==-2) break;
 					}
 					if (c==(int)'>') c = ' ';
 				} else if (c==(int)':') {
 					while (c!=-1) {
-						if ((c=is.read()) ==(int)'<')  {
-							if ((c=is.read()) ==(int)'/') {
-								if ((c=is.read()) == (int)'l')
-									if ((c=is.read()) == (int)'i')
-										if ((c=is.read()) == (int)'>')
-											break;
-							} else if (c==(int)'u') {
-								out.println("<p>list loop</p>");
-								waitForListEnd(is);
-							}
-						}
+						if (finishTrope(is)) break;
 					}
 					c = ' ';
-					out.println("<br>");
+					out.print("<br>");
 				} 
 				if (c==-2) break;
 				out.print(Character.toString((char)c));
@@ -152,6 +135,33 @@ public class TVTropeLoader {
 				}
 			}
 		}
+	}
+	
+	public static int lookForEnding(InputStream is) throws IOException {
+		int c;
+		if ((c=is.read()) ==(int)'h') 
+			if ((c=is.read()) ==(int)'r') 
+				if ((c=is.read()) ==(int)' ') 
+					if ((c=is.read()) ==(int)'/')
+						if ((c=is.read()) ==(int)'>')
+							c = -2;
+		return c;
+	}
+	
+	public static boolean finishTrope(InputStream is) throws IOException {
+		int c;
+		if ((c=is.read()) ==(int)'<')  {
+			if ((c=is.read()) ==(int)'/') {
+				if ((c=is.read()) == (int)'l')
+					if ((c=is.read()) == (int)'i')
+						if ((c=is.read()) == (int)'>')
+							return true;
+			} else if (c==(int)'u') {
+				System.out.println("list loop");
+				waitForListEnd(is);
+			}
+		}
+		return false;
 	}
 	
   
