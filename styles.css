@@ -1,0 +1,72 @@
+  ul:first-child {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+
+  li[name] {
+    float: left;
+  }
+
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-family: 'Corben', Georgia, Times, serif;
+  }
+
+  /* Change the link color to #111 (black) on hover */
+  li a:hover {
+    background-color: #111;
+  }
+
+  body {
+    font-size: 100%;
+    font-family: 'Corben', Georgia, Times, serif;
+  }
+  h1 {
+    font-family: 'Corben', Georgia, Times, serif;
+    font-size: 1.5em;
+  }
+  h2 {
+    font-family: 'Corben', Georgia, Times, serif;
+    font-size: 1.1em;
+  }
+  p {
+    font-size: 1em;
+    font-family: 'Corben', Georgia, Times, serif;
+  }
+  input[type=submit] {
+    font-family: 'Corben', Georgia, Times, serif;
+  }
+  input[type=text] {
+    font-family: 'Corben', Georgia, Times, serif;
+  }
+  input[type=select] {
+    font-family: 'Corben', Georgia, Times, serif;
+  }
+  input[type=search] {
+    width: 130px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-image: url('searchicon.gif');
+	background-size: 30px 30px;
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    padding: 14px 0px 0px 30px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+	font-family: 'Corben', Georgia, Times, serif;
+  }
+
+  input[type=search]:focus {
+    width: 100%;
+  }

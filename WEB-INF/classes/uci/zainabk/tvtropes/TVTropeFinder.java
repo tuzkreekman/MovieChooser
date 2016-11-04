@@ -20,7 +20,6 @@ public class TVTropeFinder {
 			is = connection.getInputStream();
 			 
 			int c = 0;
-			//while (c!=-1) sURL = sURL + Character.toString((char) (c=is.read())); //System.out.print(Character.toString((char) (c=is.read())));
 			matchString(is,"tvtropes.org");
 			sURL = getUntilEnd(is);
 		} finally {return "http://tvtropes.org"+sURL;}
@@ -33,8 +32,7 @@ public class TVTropeFinder {
 				i++;
 			}
 			if (i!=goal.length()) i=0;
-			else c = -1;
-			//System.out.print((char)c);
+			else break;
 		}
 	}
 	
@@ -43,7 +41,6 @@ public class TVTropeFinder {
 		String bag = "";
 		while ((c=is.read())!=(int)'&' && c!=-1) {
 			bag = bag + Character.toString((char)c);
-			//System.out.print((char)c);
 		} return bag;
 	}
 	

@@ -7,80 +7,8 @@
     
 	
   </head>
-  <style>
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-  }
-
-  li {
-    float: left;
-  }
-
-  li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-family: 'Corben', Georgia, Times, serif;
-  }
-
-  /* Change the link color to #111 (black) on hover */
-  li a:hover {
-    background-color: #111;
-  }
-
-  body {
-    font-size: 100%;
-    font-family: 'Corben', Georgia, Times, serif;
-  }
-  h1 {
-    font-family: 'Corben', Georgia, Times, serif;
-    font-size: 1.5em;
-  }
-  h2 {
-    font-family: 'Corben', Georgia, Times, serif;
-    font-size: 1.1em;
-  }
-  p {
-    font-size: 1em;
-    font-family: 'Corben', Georgia, Times, serif;
-  }
-  input[type=submit] {
-    font-family: 'Corben', Georgia, Times, serif;
-  }
-  input[type=text] {
-    font-family: 'Corben', Georgia, Times, serif;
-  }
-  input[type=select] {
-    font-family: 'Corben', Georgia, Times, serif;
-  }
-  input[type=search] {
-    width: 130px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: white;
-    background-image: url('searchicon.gif');
-	background-size: 30px 30px;
-    background-position: 0px 0px;
-    background-repeat: no-repeat;
-    padding: 14px 0px 0px 30px;
-    -webkit-transition: width 0.4s ease-in-out;
-    transition: width 0.4s ease-in-out;
-	font-family: 'Corben', Georgia, Times, serif;
-  }
-
-  input[type=search]:focus {
-    width: 100%;
-  }
-
-  </style>
+  <link rel="stylesheet" href="styles.css">
+  
   <body style="background-color:#E6E6FA">
 
   <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
@@ -95,7 +23,7 @@
   
 
   <ul>
-    <li><a href="index.jsp">Index</a></li>
+    <li name="something"><a href="index.jsp">Index</a></li>
   </ul>
 
   <form method="get" style="float:right">
@@ -103,8 +31,7 @@
   </form>
   <br><br><br>
 	
-  
-  
+
   
 
 <% 
@@ -125,6 +52,7 @@
 	ArrayList<String> tag = new ArrayList<String>();
 	boolean netflix = true;
 	boolean found = true;
+	boolean tropes = true;
 	
 	try {
 		URL url = new URL(inputStr);
@@ -325,6 +253,32 @@
     }
 	
 	
+	inputStr = "http://localhost:8080/movie_chooser/linker.jsp?q="+URLEncoder.encode(title);
+	out.println("<p>"+inputStr+"</p>");
+	
+	try {
+		URL url = new URL(inputStr);
+		URLConnection connection = url.openConnection();
+		connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+		
+		InputStream is = connection.getInputStream();
+		reader = new JsonReader(new InputStreamReader(is));
+		
+		reader.beginObject();
+		reader.nextName();
+		reader.beginArray();
+		while (reader.hasNext()) tag.add(reader.nextString());
+		reader.endArray();
+		reader.endObject();
+		reader.close();
+    } catch (Exception e) {
+		out.print(e.getMessage());
+		tropes = false;
+	} finally {
+	   ;
+    }
+	
+	
 	if (!title.equals("")) out.println("<h1>"+title+"</h1>");
 	if (!img.equals("")) out.println("<img src=\""+img+"\" alt=\""+img+"\">");
 	
@@ -339,8 +293,11 @@
 	out.println("<h2>Where to Watch</h2>");
 	out.println("<p>Netflix: "+((netflix)? "available":"unavailable")+"</p>");
 	
-	out.println("<h2>Tags</h2>");
-	for (Object s: tag.toArray()) out.println("<p>"+s.toString()+"</p>");
+	if (!tropes) out.println("<p>Tropes failed</p>");
+	
+	out.println("<h2>Tags</h2><ul>");
+	for (Object s: tag.toArray()) out.println("<li>"+s.toString()+"</li>");
+	out.println("</ul>");
 
 %>
 

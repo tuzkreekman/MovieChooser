@@ -11,7 +11,6 @@ public class TVTropeLoader {
 	
 	public static InputStream loadAndCutFront(String inputStr) throws IOException {
 		InputStream is = null;
-		//String inputStr = "http://tvtropes.org/pmwiki/pmwiki.php/Film/CarryOnSpying";
 		
 		try {
 			URL url = new URL(inputStr);
@@ -27,6 +26,19 @@ public class TVTropeLoader {
 						if ((c=is.read()) ==(int)'2')  {
 							is.read();
 							break;
+						}
+					}
+				}
+			}
+			while ((c = is.read()) != -1) {
+				if (c==(int)'<') {
+					if ((c=is.read())==(int)'u') {
+						if ((c=is.read()) ==(int)'l') {
+							if ((c=is.read()) ==(int)' ') {
+								if ((c=is.read()) ==(int)'>')  {
+									break;
+								}
+							}
 						}
 					}
 				}
@@ -62,6 +74,7 @@ public class TVTropeLoader {
 					bag = ", \"";
 				} 
 				if (c==-2) break;
+				else if (c==(int)'\"') c = '\'';
 				bag = bag + Character.toString((char)c);
 			}
 		} finally {
@@ -71,10 +84,8 @@ public class TVTropeLoader {
 	}
 	
 	public static void waitForListEnd(InputStream is) throws IOException {
-		System.out.println("WFLE");
 		int c = 0;
 		while (c!=-1) {
-			//System.out.print(Character.toString((char)c));
 			if ((c=is.read()) ==(int)'<') {
 				if ((c=is.read()) ==(int)'u') {
 					waitForListEnd(is);
@@ -108,7 +119,6 @@ public class TVTropeLoader {
 						if ((c=is.read()) == (int)'>')
 							return true;
 			} else if (c==(int)'u') {
-				System.out.println("list loop");
 				waitForListEnd(is);
 			}
 		}
