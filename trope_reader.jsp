@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">---->
 <html>
   <head>
     
@@ -42,26 +42,44 @@
 		int a;
 		if (c==-1) a = 0/0;
 		while ((c = is.read()) != -1) {
-			boolean saved = false;
-			String saving = "";
-			if (c==(int)'h') {
-				saved = true;
-				saving = saving + Character.toString((char)c);
-				if ((c=is.read()) ==(int)'r') { 
-					saving = saving + Character.toString((char)c);
-					if ((c=is.read()) ==(int)' ') {
-						saving = saving + Character.toString((char)c);
-						if ((c=is.read()) == (int)'/')
-							break;
-						saving = saving + Character.toString((char)c);
+				if (c==(int)'<') {
+					while ((c != (int)'>') && c!=-1) {
+						if ((c=is.read()) ==(int)'h') 
+							if ((c=is.read()) ==(int)'r') 
+								if ((c=is.read()) ==(int)' ') 
+									if ((c=is.read()) ==(int)'/')
+										if ((c=is.read()) ==(int)'>') {
+											c = -2;
+											break;
+										}
 					}
-					else saving = saving + Character.toString((char)c);
-				} else {
-					saving = saving + Character.toString((char)c);
-				}
-			}
-			if (saved) out.print(saving);
-            else out.print(Character.toString((char)c));
+					if (c==(int)'>') c = ' ';
+				} else if (c==(int)':') {
+					while (c!=-1) {
+						if ((c=is.read()) ==(int)'<')  {
+							if ((c=is.read()) ==(int)'/') {
+								if ((c=is.read()) == (int)'l')
+									if ((c=is.read()) == (int)'i')
+										if ((c=is.read()) == (int)'>')
+											break;
+							} else if (c==(int)'u') {
+								out.println("<p>list loop</p>");
+								while (c!=-1) {
+									if ((c=is.read()) ==(int)'<') 
+										if ((c=is.read()) ==(int)'/') 
+											if ((c=is.read()) == (int)'u')
+												if ((c=is.read()) == (int)'l')
+													if ((c=is.read()) == (int)'>')
+														break;
+								}
+							}
+						}
+					}
+					c = ' ';
+					out.println("<br>");
+				} 
+				if (c==-2) break;
+				out.print(Character.toString((char)c));
         }
 	} finally {
         if (is != null) {
