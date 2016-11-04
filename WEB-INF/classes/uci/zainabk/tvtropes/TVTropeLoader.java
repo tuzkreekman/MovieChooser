@@ -73,13 +73,14 @@ public class TVTropeLoader {
 			 
 			int c;
 			while ((c = is.read()) != -1) {
-				if (c==(int)'h') {
-					if ((c=is.read()) ==(int)'2')  {
-						is.read();
-						break;
+				if (c==(int)'/') {
+					if ((c=is.read())==(int)'h') {
+						if ((c=is.read()) ==(int)'2')  {
+							is.read();
+							break;
+						}
 					}
 				}
-				//out.println(Character.toString((char)c));
 			}
 			int a;
 			if (c==-1) 
@@ -91,7 +92,7 @@ public class TVTropeLoader {
    
 	}
 	
-	public static void spitOutTropes(InputStream is, JspWriter out) throws IOException {
+	public static void spitOutTropes(InputStream is,JspWriter out) throws IOException {
 		try {
 			int c;
 			while ((c = is.read()) != -1) {
@@ -119,14 +120,7 @@ public class TVTropeLoader {
 											break;
 							} else if (c==(int)'u') {
 								out.println("<p>list loop</p>");
-								while (c!=-1) {
-									if ((c=is.read()) ==(int)'<') 
-										if ((c=is.read()) ==(int)'/') 
-											if ((c=is.read()) == (int)'u')
-												if ((c=is.read()) == (int)'l')
-													if ((c=is.read()) == (int)'>')
-														break;
-								}
+								waitForListEnd(is);
 							}
 						}
 					}
@@ -142,9 +136,23 @@ public class TVTropeLoader {
    
 	}
 	
-	
-   
-
+	public static void waitForListEnd(InputStream is) throws IOException {
+		System.out.println("WFLE");
+		int c = 0;
+		while (c!=-1) {
+			//System.out.print(Character.toString((char)c));
+			if ((c=is.read()) ==(int)'<') {
+				if ((c=is.read()) ==(int)'u') {
+					waitForListEnd(is);
+				}
+				else if ((c) ==(int)'/') {
+					if ((c=is.read()) ==(int)'u')
+						if ((c=is.read()) ==(int)'l')
+							if ((c=is.read()) ==(int)'>') break;
+				}
+			}
+		}
+	}
 	
   
 }
