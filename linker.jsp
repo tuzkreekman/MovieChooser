@@ -7,10 +7,10 @@
 	//HTMLStandard.opener("HTML JAVA",out);
 	//HTMLStandard.startBody(out);
 	//HTMLStandard.endBody(out);
-	out.print("{\"tropes\":[\"");
-	InputStream is = TVTropeLoader.cutFront();
+	out.print("{\"tropes\":[");
+	InputStream is = TVTropeLoader.loadAndCutFront(TVTropeFinder.findTropeURL(request.getParameter("q")));
 	TVTropeLoader.spitOutTropes(is,out);
-	out.print("\"]}");
+	out.print("]}");
 	//HTMLStandard.ender(out);
 	
 	%>

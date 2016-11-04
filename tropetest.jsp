@@ -123,7 +123,7 @@
 			reader.beginObject();
 			reader.nextName();
 			reader.beginArray();
-			out.println(reader.nextString());
+			while (reader.hasNext()) out.println("<p>"+reader.nextString()+"</p>");
 			reader.endArray();
 			reader.endObject();
 			} finally {
