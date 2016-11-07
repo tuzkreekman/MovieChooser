@@ -24,11 +24,11 @@
 
   <ul>
     <li name="something"><a href="index.jsp">Index</a></li>
-  </ul>
-
-  <form method="get" style="float:right">
+	<li name="else"><form method="get" style="float:right">
 		<input type="search" name="q">
-  </form>
+		</form>
+	</li>
+  </ul>
   <br><br><br>
 	
 

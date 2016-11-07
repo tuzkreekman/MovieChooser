@@ -4,8 +4,8 @@
     padding: 0;
     overflow: hidden;
     background-color: #333;
+	height: 50px;
   }
-  
 
   li[name] {
     float: left;
@@ -41,32 +41,27 @@
     font-size: 1em;
     font-family: 'Corben', Georgia, Times, serif;
   }
-  input[type=submit] {
+  
+  input {
     font-family: 'Corben', Georgia, Times, serif;
   }
-  input[type=text] {
-    font-family: 'Corben', Georgia, Times, serif;
-  }
-  input[type=select] {
-    font-family: 'Corben', Georgia, Times, serif;
-  }
+  
   input[type=search] {
-    width: 130px;
+	float:right;
+    width: 80%;
+	height: 30px;
+    margin: 10px;
+	
     box-sizing: border-box;
     border: 2px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
     background-color: white;
     background-image: url('searchicon.gif');
-	background-size: 30px 30px;
-    background-position: 0px 0px;
+	background-size: 20px 20px;
+    background-position: left center;
     background-repeat: no-repeat;
-    padding: 14px 0px 0px 30px;
+	padding: 0px 0px 0px 20px;
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
-	font-family: 'Corben', Georgia, Times, serif;
-  }
-
-  input[type=search]:focus {
-    width: 100%;
   }

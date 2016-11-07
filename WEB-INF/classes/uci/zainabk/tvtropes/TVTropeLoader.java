@@ -60,8 +60,13 @@ public class TVTropeLoader {
 			while ((c = is.read()) != -1) {
 				
 				if (c==(int)'<') {
+					if ((c=is.read())=='!') {
+						if ((c=is.read())=='-')
+							if ((c=is.read())=='-')
+								c = waitForCommentEnd(is);
+					}
 					while ((c != (int)'>') && c!=-1) {
-						if ((c=lookForEnding(is))==-2) break;
+						if ((c=lookForEnding(is,c))==-2) break;
 					}
 					if (c==(int)'>') c = ' ';
 				} else if (c==(int)':') {
@@ -71,6 +76,7 @@ public class TVTropeLoader {
 					c = ' ';
 					bag = bag + "\"";
 					out.print(bag);
+					System.out.print(bag);
 					bag = ", \"";
 				} 
 				if (c==-2) break;
@@ -81,6 +87,19 @@ public class TVTropeLoader {
 			;		
 		}
    
+	}
+
+	public static int waitForCommentEnd(InputStream is) throws IOException {
+		int c = 0;
+		System.out.println("entered comment waiting");
+		while (c!=-1) {
+			if ((c=is.read()) ==(int)'-') {
+				if ((c=is.read()) ==(int)'-') {
+					if ((c=is.read()) ==(int)'>')
+						break;
+				}
+			} System.out.print(Character.toString((char)c));
+		} return c;
 	}
 	
 	public static void waitForListEnd(InputStream is) throws IOException {
@@ -99,9 +118,8 @@ public class TVTropeLoader {
 		}
 	}
 	
-	public static int lookForEnding(InputStream is) throws IOException {
-		int c;
-		if ((c=is.read()) ==(int)'h') 
+	public static int lookForEnding(InputStream is, int c) throws IOException {
+		if ((c) ==(int)'h') 
 			if ((c=is.read()) ==(int)'r') 
 				if ((c=is.read()) ==(int)' ') 
 					if ((c=is.read()) ==(int)'/')
