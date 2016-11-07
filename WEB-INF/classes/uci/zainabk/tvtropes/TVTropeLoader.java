@@ -48,7 +48,7 @@ public class TVTropeLoader {
 				return null;
 			return is;
 		} finally {
-			;		
+			;//System.out.println("Done cutting");		
 		}
    
 	}
@@ -64,7 +64,10 @@ public class TVTropeLoader {
 						if ((c=is.read())=='-')
 							if ((c=is.read())=='-')
 								c = waitForCommentEnd(is);
-					}
+					} else if (c=='d') if ((c=is.read())=='i') if ((c=is.read())=='v') 
+							if ((c=is.read())==' ') if ((c=is.read())=='c') if ((c=is.read())=='l') if ((c=is.read())=='a')
+								if ((c=is.read())=='s') if ((c=is.read())=='s') if ((c=is.read())=='=')  
+									c = waitForDivEnd(is);
 					while ((c != (int)'>') && c!=-1) {
 						if ((c=lookForEnding(is,c))==-2) break;
 					}
@@ -76,7 +79,7 @@ public class TVTropeLoader {
 					c = ' ';
 					bag = bag + "\"";
 					out.print(bag);
-					System.out.print(bag);
+					//System.out.print(bag);
 					bag = ", \"";
 				} 
 				if (c==-2) break;
@@ -91,14 +94,27 @@ public class TVTropeLoader {
 
 	public static int waitForCommentEnd(InputStream is) throws IOException {
 		int c = 0;
-		System.out.println("entered comment waiting");
+		//System.out.println("entered comment waiting");
 		while (c!=-1) {
 			if ((c=is.read()) ==(int)'-') {
 				if ((c=is.read()) ==(int)'-') {
 					if ((c=is.read()) ==(int)'>')
 						break;
 				}
-			} System.out.print(Character.toString((char)c));
+			} //System.out.print(Character.toString((char)c));
+		} return c;
+	}
+	
+	public static int waitForDivEnd(InputStream is) throws IOException {
+		int c = 0;
+		//System.out.println("entered comment waiting");
+		while (c!=-1) {
+			if ((c=is.read()) ==(int)'/') {
+				if ((c=is.read()) ==(int)'d')  if ((c=is.read())=='i') if ((c=is.read())=='v') {
+					if ((c=is.read()) ==(int)'>')
+						break;
+				}
+			} //System.out.print(Character.toString((char)c));
 		} return c;
 	}
 	
@@ -116,20 +132,24 @@ public class TVTropeLoader {
 				}
 			}
 		}
+
 	}
 	
 	public static int lookForEnding(InputStream is, int c) throws IOException {
-		if ((c) ==(int)'h') 
+		//System.out.println("Ending hunt"+Character.toString((char)c));
+		if ((c) ==(int)'h') {
 			if ((c=is.read()) ==(int)'r') 
 				if ((c=is.read()) ==(int)' ') 
 					if ((c=is.read()) ==(int)'/')
 						if ((c=is.read()) ==(int)'>')
 							c = -2;
+		} else c=is.read();
 		return c;
 	}
 	
 	public static boolean finishTrope(InputStream is) throws IOException {
 		int c;
+		//System.out.println("finish trope hunt");
 		if ((c=is.read()) ==(int)'<')  {
 			if ((c=is.read()) ==(int)'/') {
 				if ((c=is.read()) == (int)'l')
