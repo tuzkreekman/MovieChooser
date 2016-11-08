@@ -6,7 +6,7 @@ import java.net.*;
 //import com.google.gson.stream.JSONWriter;
 import javax.servlet.jsp.JspWriter;
 
-public class TVTropeLoader {
+public class DBTropeLoader {
 	
 	
 	public static InputStream loadAndCutFront(String inputStr) throws IOException {
