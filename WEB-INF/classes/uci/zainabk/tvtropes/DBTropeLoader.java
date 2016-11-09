@@ -22,8 +22,9 @@ public class DBTropeLoader {
 			int c;
 			while ((c = is.read()) != -1) {
 				if (c==(int)'/') {
-					if ((c=is.read())==(int)'h') {
-						if ((c=is.read()) ==(int)'2')  {
+					if ((c=is.read())==(int)'t') {
+						if ((c=is.read()) ==(int)'a') if ((c=is.read()) ==(int)'b')
+							if ((c=is.read()) ==(int)'l') if ((c=is.read()) ==(int)'e'){
 							is.read();
 							break;
 						}
@@ -31,19 +32,14 @@ public class DBTropeLoader {
 				}
 			}
 			while ((c = is.read()) != -1) {
-				if (c==(int)'<') {
-					if ((c=is.read())==(int)'u') {
-						if ((c=is.read()) ==(int)'l') {
-							if ((c=is.read()) ==(int)' ') {
-								if ((c=is.read()) ==(int)'>')  {
-									break;
-								}
-							}
+				if ((c=is.read())==(int)'t') {
+					if ((c=is.read()) ==(int)'a') if ((c=is.read()) ==(int)'b')
+						if ((c=is.read()) ==(int)'l') if ((c=is.read()) ==(int)'e'){
+							is.read();
+							break;
 						}
-					}
 				}
 			}
-			int a;
 			if (c==-1) 
 				return null;
 			return is;
