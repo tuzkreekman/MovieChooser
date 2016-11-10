@@ -11,12 +11,8 @@
   <body style="background-color:#E6E6FA">
 
   <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
-  <%@ page import="java.util.*"%>
-  <%@ page import="java.io.*" %>
-  <%@ page import="java.sql.*"%>
-  <%@ page import="java.net.*"%>
-  <%@ page import="com.google.gson.*"%>
-  <%@ page import="com.google.gson.stream.*"%>
+  
+  <%@ page import="uci.zainabk.database.*"%>
 
   <ul>
   
@@ -30,10 +26,14 @@
 
 
   <h1>Welcome to MovieChooser!</h1>
+  <%
+  int id = Login.getUserID();
+  if (id!=-1) {
+	  out.print("<p>");
+	  out.print((new UserDatabase((new Database()).getConnection())).getUser(Integer.toString(id),true).name);
+	  out.println("</p>");
+  } 
+  %>
   
-
-
-  
- 
   </body>
 </html>

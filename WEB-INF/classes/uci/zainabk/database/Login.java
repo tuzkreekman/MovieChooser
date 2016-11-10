@@ -11,10 +11,13 @@ public class Login {
 		try {
 			UserDatabase udb = new UserDatabase(db.getConnection());
 			User u = udb.getUser(username,false);
-			if (u.isPassword(password)) {
+			if (u==null) { 
+				System.out.println("Username/password combination failed to authenticate");
+			} else if (u.isPassword(password)) {
 				saveLogin(u.id);
 				return true;
 			}
+			else System.out.println("Username/password combination failed to authenticate");
 		} catch (Exception e) { 
 			System.out.println(e.getMessage());
 			return false; 
@@ -25,8 +28,8 @@ public class Login {
 	
 	private static void saveLogin(int id) throws LoginException{
 		try{
-			PrintWriter writer = new PrintWriter("WEB-INF/login.log", "UTF-8");
-			writer.printf("%d\t\t");
+			PrintWriter writer = new PrintWriter("../logs/login.log", "UTF-8"); //WEB-INF/
+			writer.printf("%d\t\t",id);
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			Date date = new Date();
 			writer.println(dateFormat.format(date));
@@ -37,36 +40,29 @@ public class Login {
 	
 	public static void logout() {
 		try{ 
-			PrintWriter writer = new PrintWriter("WEB-INF/login.log", "UTF-8");
+			PrintWriter writer = new PrintWriter("../logs/login.log", "UTF-8");
 			writer.printf("-1\t\t");
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			Date date = new Date();
 			writer.println(dateFormat.format(date));
 			writer.close();
 		} catch(Exception e) { 
-			System.out.println(e.getMessage());
+			System.out.println(e.getClass().toString()+e.getMessage());
 		} finally {;}
 	}
 	
 	public static int getUserID() {
 		try{ 
-			FileReader fileReader = new FileReader("WEB-INF/login.log");
+			FileReader fileReader = new FileReader("../logs//login.log");
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			StringTokenizer st = new StringTokenizer(bufferedReader.readLine(),"\t");
 			return Integer.parseInt(st.nextToken());
 		} catch (Exception e) {
+			System.out.println(e.getClass().toString()+e.getMessage());
 			return -1;
 		} finally {
 			;
 		} 
 	}
-	
-	/*public User getUser(Database db) {
-		try {
-			UserDatabase udb = new UserDatabase(db);
-			return udb.getUser(id);
-		} finally {
-			;
-		} return null;
-	}*/
+
 }
