@@ -1,11 +1,4 @@
-  ul:first-child {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-	height: 50px;
-  }
+ 
 
   li[name] {
     float: left;

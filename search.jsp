@@ -1,4 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<%@ taglib prefix="bar" tagdir="/WEB-INF/tags" %>
 <html>
   <head>
     
@@ -7,7 +8,7 @@
     
 	
   </head>
-  <link rel="stylesheet" href="styles.css">
+  
   
   <body style="background-color:#E6E6FA">
 
@@ -20,17 +21,18 @@
   <%@ page import="com.google.gson.stream.*"%>
   <%@ page import="com.net.codeusa.*"%>
   <%@ page import="edu.uci.eecs.zainabk.*"%>
+  <%@ page import="uci.zainabk.database.*"%>
   
 
-  <ul>
-    <li name="something"><a href="index.jsp">Index</a></li>
-	<li name="else"><form method="get" style="float:right">
-		<input type="search" name="q">
-		</form>
-	</li>
-  </ul>
-  <br><br><br>
-	
+  <%
+  int id = Login.getUserID();
+  String thing;
+  if (id!=-1) {
+	  thing = ((new UserDatabase((new Database()).getConnection())).getUser(Integer.toString(id),true).name);
+  } else thing = ("Login");
+  %>
+  <bar:horizontal_bar loggedin="<%=thing%>"/>
+  <link rel="stylesheet" href="styles.css">
 
   
 

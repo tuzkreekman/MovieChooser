@@ -26,7 +26,32 @@
 
 
   <h1>Welcome to MovieChooser!</h1>
+  <h2>Login</h2>
+  <form method="post">
+		<input name="funcID" type="hidden" value="1">
+		Username: <input name="username" type="text" required><br>
+		Password: <input name="password" type="password" required><br>
+		<input type="submit" value="Login"><br>
+		</form>
   
+  <%
+  String funcID = request.getParameter("funcID");
+  try{ 
+	if (funcID!=null && funcID.equals("1")) {
+		boolean success = false;
+		Database db = new Database();
+		String u = request.getParameter("username");
+		String p = request.getParameter("password");
+		success = Login.login(db,u,p);
+		db.close();
+		if (success) {
+		  out.println("<meta http-equiv=\"refresh\" content=\"0; URL='user.jsp'\" />");
+		} else out.println("<p>Login failed, look at apache for more info</p>");
+	}
+  } finally {
+	  ;
+  }
+  %>
   
   </body>
 </html>
