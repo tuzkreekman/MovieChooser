@@ -1,7 +1,13 @@
 tvtropes:
 javac -classpath "C:\Users\Zainab Khan\Desktop\EECS118\apache-tomcat-7.0.72\lib\jsp-api.jar" *.java
 
+imdb:
+javac -classpath "../lib/gson-2.8.0.jar" uci/zainabk/imdb/*.java
+java -classpath "../lib/gson-2.8.0.jar;." uci.zainabk.imdb.Test
+
+
 database:
 javac *.java
-java -classpath "C:\Users\Zainab Khan\Desktop\EECS118\apache-tomcat-7.0.72\lib\mysql-connector-java-5.0.8-bin.jar;." uci.zainabk.database.Test
+java -classpath "C:\Users\Zainab Khan\Desktop\EECS118\apache-tomcat-7.0.72\lib\mysql-connector-java-5.0.8-bin.jar;../lib/gson-2.8.0.jar;." uci.zainabk.database.Test
+
 

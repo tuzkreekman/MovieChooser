@@ -16,5 +16,9 @@ public class User {
 	public boolean equals(User x) {
 		return (this.id==x.id && this.name==x.name && x.isPassword(password));
 	}
+	
+	public String toString() {
+		return Integer.toString(id) +": "+name;
+	}
 
 }
