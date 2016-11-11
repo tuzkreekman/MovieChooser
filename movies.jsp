@@ -3,6 +3,7 @@
 <html>
   <head>
     <%@ page import="uci.zainabk.database.*"%>
+	<%@ page import="uci.zainabk.imdb.*"%>
 	<%
   int id = Login.getUserID();
   String thing;
@@ -35,51 +36,15 @@
 
 
   <h1>Welcome, <%=thing%>!</h1>
-  <form method="post">
-		<input name="funcID" type="hidden" value="1">
-		<input type="submit" value="Edit Username">
-		</form>
-  <form method="post">
-		<input name="funcID" type="hidden" value="2">
-		<input type="submit" value="Edit Password">
-		</form>
-  <form method="post">
-		<input name="funcID" type="hidden" value="3">
-		<input type="submit" value="Logout">
-		</form>
-  
+  <h2>These are your favorite movies</h2>
   <%
-	String funcID = request.getParameter("funcID");
-	if (funcID==null) {;
-	} else if (funcID.equals("3")) { 
-		Login.logout();
-		out.println("<meta http-equiv=\"refresh\" content=\"0; URL='login.jsp'\" />");
-	} else if (funcID.equals("1")) {
-		out.println("<b>Edit:</b>");
-		out.println("<form method=\"post\">");
-		out.println("<input name=\"funcID\" type=\"hidden\" value=\"4\">");
-		out.println("New username: <input name=\"name\" type=\"text\" value=\""+thing+"\" required>");
-		out.println("<input type=\"submit\" value=\"Done\"/>");
-		out.println("</form>");
-	} else if (funcID.equals("2")) {
-		out.println("<b>Edit:</b>");
-		out.println("<form method=\"post\">"); 
-		out.println("<input name=\"funcID\" type=\"hidden\" value=\"5\">");
-		out.println("New password: <input name=\"pwd\" type=\"password\" required>");
-		out.println("<input type=\"submit\" value=\"Done\"/>");
-		out.println("</form>");
-	} else if (funcID.equals("4")) {
-		int output = udb.editUsername(id,request.getParameter("name"));
-		//force refresh?
-		if (output>=0) out.println("<p>Success</p>");
-		else out.println("<p>Failure</p>");
-	} else if (funcID.equals("5")) {
-		int output = udb.editPassword(id,request.getParameter("pwd"));
-		if (output>=0) out.println("<p>Success</p>");
-		else out.println("<p>Failure</p>");
+	FavDatabase fdb = new FavDatabase(db.getConnection());
+	MovieDatabase mdb = new MovieDatabase(db.getConnection());
+	for (Fav f : fdb.getFavs(id)) {
+		String title = IMDB.getTitle(mdb.getMovie(f.movie_id,null).imdb);
+		out.println("<p><a href=\"search.jsp?q="+title+"\">"+title+"</p>");
 	}
   %>
-  
   
   </body>
 </html>
