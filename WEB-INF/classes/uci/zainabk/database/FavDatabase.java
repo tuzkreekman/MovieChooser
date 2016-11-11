@@ -20,8 +20,8 @@ public class FavDatabase {
 		pstmt.setString(1,Integer.toString(uid));
 		ResultSet result = pstmt.executeQuery();
 	    while (result.next()) {
-			list.add(new Fav(Integer.parseInt(result.getString(2)),
-					Integer.parseInt(result.getString(1))));
+			list.add(new Fav(Integer.parseInt(result.getString(1)),
+					Integer.parseInt(result.getString(2))));
         } return list;
 	}
 	
@@ -32,6 +32,15 @@ public class FavDatabase {
 		pstmt.setString(1,Integer.toString(uid));
 		pstmt.setString(2,Integer.toString(mid));
 		pstmt.executeUpdate();
+	}
+	
+	public void removeFav(int uid, int mid) throws SQLException {
+		PreparedStatement pstmt;
+		pstmt = con.prepareStatement("DELETE FROM faves WHERE movie_id=? AND user_id=?");
+		pstmt.clearParameters();
+		pstmt.setString(1,Integer.toString(mid));
+		pstmt.setString(2,Integer.toString(uid));
+		pstmt.execute();
 	}
 
 }

@@ -34,7 +34,9 @@ public class FavTest{
 			fdb = new FavDatabase(db.getConnection());
 			for (Fav f : fdb.getFavs(id)) {
 				System.out.println(f);
+				myFav = f;
 			}
+			fdb.removeFav(myFav.user_id,myFav.movie_id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

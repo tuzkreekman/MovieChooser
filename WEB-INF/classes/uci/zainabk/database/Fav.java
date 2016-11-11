@@ -3,7 +3,7 @@ package uci.zainabk.database;
 public class Fav {
 	public final int movie_id, user_id;
 	
-	public Fav(int mid, int uid) {
+	public Fav(int uid, int mid) {
 		movie_id = mid;
 		user_id = uid;
 	}

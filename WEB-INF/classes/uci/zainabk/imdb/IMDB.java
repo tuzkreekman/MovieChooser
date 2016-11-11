@@ -105,4 +105,53 @@ public class IMDB {
 	
 	}
 	
+	public static String getTitle(String searchStr) {
+		JsonReader reader;
+		String inputStr = "", imdb="";
+		
+		try{
+			inputStr = "http://www.omdbapi.com/?i="+URLEncoder.encode(searchStr,"utf-8");
+			System.out.println("<p>"+inputStr+"</p>");
+		} catch (Exception e) {
+			System.out.println(e.getClass().toString()+e.getMessage());
+		}
+		
+		boolean found = true;
+		
+		try {
+			URL url = new URL(inputStr);
+			URLConnection connection = url.openConnection();
+			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+			
+			InputStream is = connection.getInputStream();
+			reader = new JsonReader(new InputStreamReader(is));
+			
+			reader.beginObject();
+		
+			try {
+				while (reader.hasNext()) {
+					String name = reader.nextName(); 
+					if (name.equals("Response")) {
+						if (reader.nextString().equals("False")) {
+							found = false;
+							break;
+						}
+					} else if (name.equals("Title")) {
+						return reader.nextString();
+					} else {
+						reader.nextString();
+					}
+				}
+			} finally {
+				reader.close();
+			}
+		} catch (Exception e) {
+			System.out.println("IMDB failed: "+e.getClass().toString()+e.getMessage());
+		} finally {
+		   ;
+		}
+		return null;
+	
+	}
+	
 }

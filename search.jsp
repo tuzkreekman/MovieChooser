@@ -22,13 +22,17 @@
   <%@ page import="com.net.codeusa.*"%>
   <%@ page import="edu.uci.eecs.zainabk.*"%>
   <%@ page import="uci.zainabk.database.*"%>
+  <%@ page import="uci.zainabk.imdb.*"%>
   
 
   <%
   int id = Login.getUserID();
+  Database db = new Database();
+  UserDatabase udb = new UserDatabase(db.getConnection());
+  
   String thing;
   if (id!=-1) {
-	  thing = ((new UserDatabase((new Database()).getConnection())).getUser(Integer.toString(id),true).name);
+	  thing = (udb.getUser(Integer.toString(id),true).name);
   } else thing = ("Login");
   %>
   <bar:horizontal_bar loggedin="<%=thing%>"/>
@@ -37,9 +41,29 @@
   
 
 <% 
-	//Hello h = new Hello();
-	JsonReader reader;
 	String searchStr = request.getParameter("q");
+	if (searchStr==null) out.println("<meta http-equiv=\"refresh\" content=\"0; URL='index.jsp'\" />");
+	
+	FavDatabase fdb = new FavDatabase(db.getConnection());
+	ArrayList<Fav> favs = fdb.getFavs(id);
+	MovieDatabase mdb = new MovieDatabase(db.getConnection());
+	String iMDB = IMDB.getID(searchStr);
+	boolean found;
+	if (iMDB!=null && !iMDB.equals("")) {
+		Movie m = mdb.getMovie(-1,iMDB);
+		if (m==null) mdb.addMovie(iMDB);
+		Fav myFav = new Fav(id,m.id);
+		found = false;
+		for (Fav f : fdb.getFavs(id)) {
+			if (f.equals(myFav)) found = true;
+		} if (!found) {
+			out.println("<a href=\"like.jsp?q="+Integer.toString(m.id)+"\">Favorite</a>");
+		} else {
+			out.println("<a href=\"unlike.jsp?q="+Integer.toString(m.id)+"\">Un-Favorite</a>");
+		}
+	}
+	
+	JsonReader reader;
 	String inputStr = "";
 	
 	String img = "",title = "";
@@ -53,7 +77,7 @@
 	double r1 = 0;
 	ArrayList<String> tag = new ArrayList<String>();
 	boolean netflix = true;
-	boolean found = true;
+	found = true;
 	boolean tropes = true;
 	
 	try {

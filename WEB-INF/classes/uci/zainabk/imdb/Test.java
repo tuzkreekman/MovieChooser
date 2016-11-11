@@ -6,6 +6,8 @@ public class Test{
 			System.out.println("Requires 1 argument");
 			return;
 		}
-		System.out.println(IMDB.getID(args[0]));
+		String id = IMDB.getID(args[0]);
+		System.out.println(id);
+		System.out.println(IMDB.getTitle(id));
 	}
 }
