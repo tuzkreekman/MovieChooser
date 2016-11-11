@@ -19,8 +19,6 @@
   <%@ page import="java.net.*"%>
   <%@ page import="com.google.gson.*"%>
   <%@ page import="com.google.gson.stream.*"%>
-  <%@ page import="com.net.codeusa.*"%>
-  <%@ page import="edu.uci.eecs.zainabk.*"%>
   <%@ page import="uci.zainabk.database.*"%>
   <%@ page import="uci.zainabk.imdb.*"%>
   
@@ -42,16 +40,20 @@
 
 <% 
 	String searchStr = request.getParameter("q");
-	if (searchStr==null) out.println("<meta http-equiv=\"refresh\" content=\"0; URL='index.jsp'\" />");
-	
+	System.out.println("Search str: "+searchStr);
 	FavDatabase fdb = new FavDatabase(db.getConnection());
 	ArrayList<Fav> favs = fdb.getFavs(id);
 	MovieDatabase mdb = new MovieDatabase(db.getConnection());
-	String iMDB = IMDB.getID(searchStr);
+	String iMDB = null;
+	if (searchStr==null) out.println("<meta http-equiv=\"refresh\" content=\"0; URL='index.jsp'\" />");
+	else iMDB = IMDB.getID(searchStr);
 	boolean found;
 	if (iMDB!=null && !iMDB.equals("")) {
 		Movie m = mdb.getMovie(-1,iMDB);
-		if (m==null) mdb.addMovie(iMDB);
+		if (m==null) {
+			mdb.addMovie(iMDB);
+			m = mdb.getMovie(-1,iMDB);
+		}
 		Fav myFav = new Fav(id,m.id);
 		found = false;
 		for (Fav f : fdb.getFavs(id)) {
@@ -61,78 +63,23 @@
 		} else {
 			out.println("<a href=\"unlike.jsp?q="+Integer.toString(m.id)+"\">Un-Favorite</a>");
 		}
-	}
-	
-	JsonReader reader;
-	String inputStr = "";
-	
-	String img = "",title = "";
-	int year = 0;
-	//inputStr = "http://www.omdbapi.com/?i="+URLEncoder.encode(imdb);
-	inputStr = "http://www.omdbapi.com/?t="+URLEncoder.encode(searchStr);
-	out.println("<p>"+inputStr+"</p>");
-	
-	String r3 = "";
-	int r2 = 0; 
-	double r1 = 0;
-	ArrayList<String> tag = new ArrayList<String>();
-	boolean netflix = true;
-	found = true;
-	boolean tropes = true;
-	
-	try {
-		URL url = new URL(inputStr);
-		URLConnection connection = url.openConnection();
-		connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+			
+		JsonReader reader;
+		String inputStr = "";
 		
-		InputStream is = connection.getInputStream();
-		reader = new JsonReader(new InputStreamReader(is));
-		
-		reader.beginObject();
-	
-		try {
-			while (reader.hasNext()) {
-				String name = reader.nextName(); 
-				if (name.equals("Response")) {
-					if (reader.nextString().equals("False")) {
-						found = false;
-						break;
-					}
-				} else if (name.equals("Poster")) {
-					String pic = reader.nextString();
-					if (img.equals("")) img = pic;
-				} else if (name.equals("Title")) {
-					String t = reader.nextString();
-					if (title.equals("")) title = t;
-				} else if (name.equals("Metascore")) {
-					String meta = reader.nextString();
-					if (!meta.contains("N"))
-						r2 = Integer.parseInt(meta);
-				} else if (name.equals("imdbRating")) {
-					r1 = reader.nextDouble();
-				} else if (name.equals("Rated")) {
-					r3 = reader.nextString();
-				} else if (true==false) {
-					out.println("<h2>"+name+"</h2>");
-					out.println("<p>"+reader.nextString()+"</p>");
-				} else {
-					reader.nextString();
-				}
-			}
-			//reader.endObject();
-		} finally {
-			reader.close();
-		}
-    } catch (Exception e) {
-		out.println("<p>IMDB failed: "+e.getMessage()+"</p>");
-	} finally {
-	   ;
-    }
-	
-	if (!found) {
-		inputStr = "http://www.omdbapi.com/?s="+URLEncoder.encode(searchStr);
+		String img = "",title = "";
+		int year = 0;
+		//inputStr = "http://www.omdbapi.com/?i="+URLEncoder.encode(imdb);
+		inputStr = "http://www.omdbapi.com/?t="+URLEncoder.encode(searchStr);
 		out.println("<p>"+inputStr+"</p>");
-		String imdb = "";
+		
+		String r3 = "";
+		int r2 = 0; 
+		double r1 = 0;
+		ArrayList<String> tag = new ArrayList<String>();
+		boolean netflix = true;
+		found = true;
+		boolean tropes = true;
 		
 		try {
 			URL url = new URL(inputStr);
@@ -152,35 +99,42 @@
 							found = false;
 							break;
 						}
-					} else if (name.equals("Search")) {
-						reader.beginArray();
-						reader.beginObject();
-						while (reader.hasNext()) {
-							name = reader.nextName(); 
-							if (name.equals("imdbID")) {
-								imdb = reader.nextString();
-							} else {
-								reader.nextString();
-							}
-						}
-						reader.endObject();
-						break;
+					} else if (name.equals("Poster")) {
+						String pic = reader.nextString();
+						if (img.equals("")) img = pic;
+					} else if (name.equals("Title")) {
+						String t = reader.nextString();
+						if (title.equals("")) title = t;
+					} else if (name.equals("Metascore")) {
+						String meta = reader.nextString();
+						if (!meta.contains("N"))
+							r2 = Integer.parseInt(meta);
+					} else if (name.equals("imdbRating")) {
+						r1 = reader.nextDouble();
+					} else if (name.equals("Rated")) {
+						r3 = reader.nextString();
+					} else if (true==false) {
+						out.println("<h2>"+name+"</h2>");
+						out.println("<p>"+reader.nextString()+"</p>");
 					} else {
 						reader.nextString();
 					}
 				}
+				//reader.endObject();
 			} finally {
 				reader.close();
 			}
 		} catch (Exception e) {
-			out.println("<p>IMDB2 failed: "+e.getMessage()+"</p>");
+			out.println("<p>IMDB failed: "+e.getMessage()+"</p>");
 		} finally {
 		   ;
 		}
 		
-		if (!imdb.equals("")) {
-			inputStr = "http://www.omdbapi.com/?i="+URLEncoder.encode(imdb);
+		if (!found) {
+			inputStr = "http://www.omdbapi.com/?s="+URLEncoder.encode(searchStr);
 			out.println("<p>"+inputStr+"</p>");
+			String imdb = "";
+			
 			try {
 				URL url = new URL(inputStr);
 				URLConnection connection = url.openConnection();
@@ -199,132 +153,181 @@
 								found = false;
 								break;
 							}
-						} else if (name.equals("Poster")) {
-							String pic = reader.nextString();
-							if (img.equals("")&&!pic.equals("N/A")) img = pic;
-						} else if (name.equals("Title")) {
-							String t = reader.nextString();
-							if (title.equals("")) title = t;
-						} else if (name.equals("Metascore")) {
-							String meta = reader.nextString();
-							if (!meta.contains("N"))
-								r2 = Integer.parseInt(meta);
-						} else if (name.equals("imdbRating")) {
-							r1 = reader.nextDouble();
-						} else if (name.equals("Rated")) {
-							r3 = reader.nextString();
-						} else if (true==false) {
-							out.println("<h2>"+name+"</h2>");
-							out.println("<p>"+reader.nextString()+"</p>");
+						} else if (name.equals("Search")) {
+							reader.beginArray();
+							reader.beginObject();
+							while (reader.hasNext()) {
+								name = reader.nextName(); 
+								if (name.equals("imdbID")) {
+									imdb = reader.nextString();
+								} else {
+									reader.nextString();
+								}
+							}
+							reader.endObject();
+							break;
 						} else {
 							reader.nextString();
 						}
 					}
-					reader.endObject();
 				} finally {
 					reader.close();
 				}
 			} catch (Exception e) {
-				out.println("<p>IMDB3 failed: "+e.getMessage()+"</p>");
+				out.println("<p>IMDB2 failed: "+e.getMessage()+"</p>");
 			} finally {
 			   ;
 			}
-		}
-	}
-	
-	inputStr = "http://netflixroulette.net/api/api.php?title="+URLEncoder.encode(title);
-	out.println("<p>"+inputStr+"</p>");
-	
-	try {
-		int a = 0/0;
-		URL url = new URL(inputStr);
-		URLConnection connection = url.openConnection();
-		connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-		
-		InputStream is = connection.getInputStream();
-		reader = new JsonReader(new InputStreamReader(is));
-		
-		reader.beginObject();
-	
-		try {
-			while (reader.hasNext()) {
-				String name = reader.nextName();
-				if (name.equals("errorcode")) {
-					out.println("<h2>"+name+"</h2>");
-					out.println("<p>"+reader.nextString()+"</p>");
-				} else if (name.equals("message")) {
-					out.println("<h2>"+name+"</h2>");
-					out.println("<p>"+reader.nextString()+"</p>");
-				} else if (name.equals("poster")) {
-					String pic = reader.nextString();
-					if (img.equals("")) img = pic;
-				} else if (name.equals("category")) {
-					String category = reader.nextString();
-					if (!category.equals("N/A")) tag.add(category);
-				} else if (true==false) {
-					out.println("<h2>"+name+"</h2>");
-					out.println("<p>"+reader.nextString()+"</p>");
-				} else reader.nextString();
+			
+			if (!imdb.equals("")) {
+				inputStr = "http://www.omdbapi.com/?i="+URLEncoder.encode(imdb);
+				out.println("<p>"+inputStr+"</p>");
+				try {
+					URL url = new URL(inputStr);
+					URLConnection connection = url.openConnection();
+					connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+					
+					InputStream is = connection.getInputStream();
+					reader = new JsonReader(new InputStreamReader(is));
+					
+					reader.beginObject();
+				
+					try {
+						while (reader.hasNext()) {
+							String name = reader.nextName(); 
+							if (name.equals("Response")) {
+								if (reader.nextString().equals("False")) {
+									found = false;
+									break;
+								}
+							} else if (name.equals("Poster")) {
+								String pic = reader.nextString();
+								if (img.equals("")&&!pic.equals("N/A")) img = pic;
+							} else if (name.equals("Title")) {
+								String t = reader.nextString();
+								if (title.equals("")) title = t;
+							} else if (name.equals("Metascore")) {
+								String meta = reader.nextString();
+								if (!meta.contains("N"))
+									r2 = Integer.parseInt(meta);
+							} else if (name.equals("imdbRating")) {
+								r1 = reader.nextDouble();
+							} else if (name.equals("Rated")) {
+								r3 = reader.nextString();
+							} else if (true==false) {
+								out.println("<h2>"+name+"</h2>");
+								out.println("<p>"+reader.nextString()+"</p>");
+							} else {
+								reader.nextString();
+							}
+						}
+						reader.endObject();
+					} finally {
+						reader.close();
+					}
+				} catch (Exception e) {
+					out.println("<p>IMDB3 failed: "+e.getMessage()+"</p>");
+				} finally {
+				   ;
+				}
 			}
-			reader.endObject();
+		}
+		
+		inputStr = "http://netflixroulette.net/api/api.php?title="+URLEncoder.encode(title);
+		out.println("<p>"+inputStr+"</p>");
+		
+		try {
+			int a = 0/0;
+			URL url = new URL(inputStr);
+			URLConnection connection = url.openConnection();
+			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+			
+			InputStream is = connection.getInputStream();
+			reader = new JsonReader(new InputStreamReader(is));
+			
+			reader.beginObject();
+		
+			try {
+				while (reader.hasNext()) {
+					String name = reader.nextName();
+					if (name.equals("errorcode")) {
+						out.println("<h2>"+name+"</h2>");
+						out.println("<p>"+reader.nextString()+"</p>");
+					} else if (name.equals("message")) {
+						out.println("<h2>"+name+"</h2>");
+						out.println("<p>"+reader.nextString()+"</p>");
+					} else if (name.equals("poster")) {
+						String pic = reader.nextString();
+						if (img.equals("")) img = pic;
+					} else if (name.equals("category")) {
+						String category = reader.nextString();
+						if (!category.equals("N/A")) tag.add(category);
+					} else if (true==false) {
+						out.println("<h2>"+name+"</h2>");
+						out.println("<p>"+reader.nextString()+"</p>");
+					} else reader.nextString();
+				}
+				reader.endObject();
+			} catch (Exception e) {
+				netflix = false;
+			} finally {
+				reader.close();
+			}
 		} catch (Exception e) {
 			netflix = false;
 		} finally {
-			reader.close();
+		   ;
 		}
-    } catch (Exception e) {
-		netflix = false;
-	} finally {
-	   ;
-    }
-	
-	
-	inputStr = "http://localhost:8080/movie_chooser/linker.jsp?q="+URLEncoder.encode(title);
-	out.println("<p>"+inputStr+"</p>");
-	
-	try {
-		URL url = new URL(inputStr);
-		URLConnection connection = url.openConnection();
-		connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
 		
-		InputStream is = connection.getInputStream();
-		reader = new JsonReader(new InputStreamReader(is));
 		
-		reader.beginObject();
-		reader.nextName();
-		reader.beginArray();
-		while (reader.hasNext()) tag.add(reader.nextString());
-		reader.endArray();
-		reader.endObject();
-		reader.close();
-    } catch (Exception e) {
-		out.print(e.getMessage());
-		tropes = false;
-	} finally {
-	   ;
-    }
-	
-	
-	if (!title.equals("")) out.println("<h1>"+title+"</h1>");
-	if (!img.equals("")) out.println("<img src=\""+img+"\" alt=\""+img+"\">");
-	
-	out.println("<h2>General Info</h2>");
-	out.println("<p>Rating "+r3+"</p>");
-	
-	out.println("<h2>Reviews</h2>");
-	if (r2!=0) out.println("<p>Metacritic "+Integer.toString(r2)+"</p>");
-	else out.println("<p>Metacritic unavailable</p>");
-	out.println("<p>IMDB "+Double.toString(r1)+"</p>");
-	
-	out.println("<h2>Where to Watch</h2>");
-	out.println("<p>Netflix: "+((netflix)? "available":"unavailable")+"</p>");
-	
-	if (!tropes) out.println("<p>Tropes failed</p>");
-	
-	out.println("<h2>Tags</h2><ul>");
-	for (Object s: tag.toArray()) out.println("<li>"+s.toString()+"</li>");
-	out.println("</ul>");
-
+		inputStr = "http://localhost:8080/movie_chooser/linker.jsp?q="+URLEncoder.encode(title);
+		out.println("<p>"+inputStr+"</p>");
+		
+		try {
+			URL url = new URL(inputStr);
+			URLConnection connection = url.openConnection();
+			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+			
+			InputStream is = connection.getInputStream();
+			reader = new JsonReader(new InputStreamReader(is));
+			
+			reader.beginObject();
+			reader.nextName();
+			reader.beginArray();
+			while (reader.hasNext()) tag.add(reader.nextString());
+			reader.endArray();
+			reader.endObject();
+			reader.close();
+		} catch (Exception e) {
+			out.print(e.getMessage());
+			tropes = false;
+		} finally {
+		   ;
+		}
+		
+		
+		if (!title.equals("")) out.println("<h1>"+title+"</h1>");
+		if (!img.equals("")) out.println("<img src=\""+img+"\" alt=\""+img+"\">");
+		
+		out.println("<h2>General Info</h2>");
+		out.println("<p>Rating "+r3+"</p>");
+		
+		out.println("<h2>Reviews</h2>");
+		if (r2!=0) out.println("<p>Metacritic "+Integer.toString(r2)+"</p>");
+		else out.println("<p>Metacritic unavailable</p>");
+		out.println("<p>IMDB "+Double.toString(r1)+"</p>");
+		
+		out.println("<h2>Where to Watch</h2>");
+		out.println("<p>Netflix: "+((netflix)? "available":"unavailable")+"</p>");
+		
+		if (!tropes) out.println("<p>Tropes failed</p>");
+		
+		out.println("<h2>Tags</h2><ul>");
+		for (Object s: tag.toArray()) out.println("<li>"+s.toString()+"</li>");
+		out.println("</ul>");
+	} else {
+		out.println("<h1>Movie not found</h1>");
+	}
 %>
 
 
