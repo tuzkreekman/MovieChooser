@@ -17,6 +17,7 @@ li a[href="user.jsp"] {
 <ul name="barh">
     <li name="something"><a href="index.jsp">Index</a></li>
 	<li name="something"><a href="movies.jsp">My Movies</a></li>
+	<li name="something"><a href="finder.jsp">Find Me Something</a></li>
 	<li name="else"><form action = "search.jsp" method="get">
 		<input type="search" name="q">
 		</form>
