@@ -23,7 +23,7 @@ public class FavTest{
 			if (m==null) mdb.addMovie(imdb);
 			m = mdb.getMovie(-1,imdb);
 			System.out.println(m);
-			Fav myFav = new Fav(id,m.id);
+			Fav myFav = new Fav(id,m.id,-1);
 			FavDatabase fdb = new FavDatabase(db.getConnection());
 			boolean found = false;
 			for (Fav f : fdb.getFavs(id)) {
@@ -36,6 +36,8 @@ public class FavTest{
 				System.out.println(f);
 				myFav = f;
 			}
+			fdb.addHate(id,m.id);
+			fdb.addWatch(id,m.id);
 			fdb.removeFav(myFav.user_id,myFav.movie_id);
 		} catch (Exception e) {
 			e.printStackTrace();

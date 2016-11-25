@@ -54,14 +54,37 @@
 			mdb.addMovie(iMDB);
 			m = mdb.getMovie(-1,iMDB);
 		}
-		Fav myFav = new Fav(id,m.id);
+		Fav myFav = new Fav(id,m.id,-1);
 		found = false;
 		for (Fav f : fdb.getFavs(id)) {
-			if (f.equals(myFav)) found = true;
+			if (f.equals(myFav)) {
+				found = true;
+				myFav = f;
+				break;
+			}
 		} if (!found) {
+			out.println("<a href=\"hate.jsp?q="+Integer.toString(m.id)+"\">Hated</a>");
+			out.println("<a href=\"watch.jsp?q="+Integer.toString(m.id)+"\">Watched</a>");
 			out.println("<a href=\"like.jsp?q="+Integer.toString(m.id)+"\">Favorite</a>");
 		} else {
-			out.println("<a href=\"unlike.jsp?q="+Integer.toString(m.id)+"\">Un-Favorite</a>");
+			switch(myFav.getOpinion()) {
+				case 0:
+					out.println("<a href=\"unlike.jsp?q="+Integer.toString(m.id)+"\">Un-hate</a>");
+					out.println("<a href=\"watch.jsp?q="+Integer.toString(m.id)+"\">Watched</a>");
+					out.println("<a href=\"like.jsp?q="+Integer.toString(m.id)+"\">Favorite</a>");
+					break;
+				case 1:
+					out.println("<a href=\"hate.jsp?q="+Integer.toString(m.id)+"\">Hated</a>");
+					out.println("<a href=\"unlike.jsp?q="+Integer.toString(m.id)+"\">Remove from Watched</a>");
+					out.println("<a href=\"like.jsp?q="+Integer.toString(m.id)+"\">Favorite</a>");
+					break;
+				case 2:
+					out.println("<a href=\"hate.jsp?q="+Integer.toString(m.id)+"\">Hated</a>");
+					out.println("<a href=\"watch.jsp?q="+Integer.toString(m.id)+"\">Watched</a>");
+					out.println("<a href=\"unlike.jsp?q="+Integer.toString(m.id)+"\">Un-favorite</a>");
+					break;
+				default: break;
+			}
 		}
 			
 		JsonReader reader;

@@ -36,32 +36,19 @@
 
 
   <h1>Welcome, <%=thing%>!</h1>
-  <h2>These are your favorite movies</h2>
+  Please wait while we mark this movie as disliked...
   <%
-	FavDatabase fdb = new FavDatabase(db.getConnection());
-	MovieDatabase mdb = new MovieDatabase(db.getConnection());
-	out.println("<h2>Favorites</h2>");
-	for (Fav f : fdb.getFavs(id)) {
-		if (f.getOpinion()==2) {
-			String title = IMDB.getTitle(mdb.getMovie(f.movie_id,null).imdb);
-			out.println("<p><a href=\"search.jsp?q="+title+"\">"+title+"</a></p>");
-		}
-	}
-	out.println("<h2>Watched</h2>");
-	for (Fav f : fdb.getFavs(id)) {
-		if (f.getOpinion()==1) {
-			String title = IMDB.getTitle(mdb.getMovie(f.movie_id,null).imdb);
-			out.println("<p><a href=\"search.jsp?q="+title+"\">"+title+"</a></p>");
-		}
-	}
-	out.println("<h2>Hated</h2>");
-	for (Fav f : fdb.getFavs(id)) {
-		if (f.getOpinion()==0) {
-			String title = IMDB.getTitle(mdb.getMovie(f.movie_id,null).imdb);
-			out.println("<p><a href=\"search.jsp?q="+title+"\">"+title+"</a></p>");
-		}
-	}
+  String mID = request.getParameter("q");
+  if (mID==null) out.println("<meta http-equiv=\"refresh\" content=\"0; URL='index.jsp'\" />");
+
+  int mid = Integer.parseInt(mID);
+  FavDatabase fdb = new FavDatabase(db.getConnection());
+  MovieDatabase mdb = new MovieDatabase(db.getConnection());
+  Movie m = mdb.getMovie(mid,null);
+  fdb.addHate(id,mid);
+  out.println("<meta http-equiv=\"refresh\" content=\"0; URL='search.jsp?q="+IMDB.getTitle(m.imdb)+"'\" />");
   %>
+  
   
   </body>
 </html>

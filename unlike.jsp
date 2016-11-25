@@ -36,7 +36,7 @@
 
 
   <h1>Welcome, <%=thing%>!</h1>
-  Please wait while we un-favorite this movie...
+  Please wait while we remove this movie from your list...
   <%
   String mID = request.getParameter("q");
   if (mID==null) out.println("<meta http-equiv=\"refresh\" content=\"0; URL='index.jsp'\" />");
