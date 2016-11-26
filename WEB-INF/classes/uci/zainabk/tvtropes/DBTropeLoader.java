@@ -3,9 +3,10 @@ package uci.zainabk.tvtropes;
 import java.util.*;
 import java.io.*;
 import java.net.*;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.*;
 import org.jsoup.*;
 import org.jsoup.nodes.*;
+import org.jsoup.select.Elements;
 
 public class DBTropeLoader {
 
@@ -16,41 +17,30 @@ public class DBTropeLoader {
 			URLConnection connection = url.openConnection();
 			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
 				
+			String baseUri = "dbtropes.org";
 			InputStream is = connection.getInputStream();
-			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			Document doc = Jsoup.parse(is,null,baseUri);
 			
 			Whitelist whitelist = new Whitelist();
 			whitelist.addTags("table");
 			whitelist.addTags("tr");
+			whitelist.addTags("td");
+			Cleaner cleaner = new Cleaner(whitelist);
 			
-			String html = br.readLine();
-			String clean;
-			//String clean = Jsoup.clean(html,whitelist);
+			doc = cleaner.clean(doc);
 			
-			while (html!=null) {
-				clean = Jsoup.clean(html,whitelist);
-				Document doc = Jsoup.parse(clean);
-				Element table = doc.select("table").first();
-				if (table!=null) {
-					System.out.println("found table");
-					System.out.println(clean);
-				}
-				//System.out.println(clean);
-				html = br.readLine();
+			Element table = doc.select("table").first();
+			Iterator<Element> rows = table.select("tr").iterator();
+			
+			for (Element row : table.select("tr")) {
+				Elements objs = row.select("td");
+				Element obj = objs.first();
+				obj = obj.nextElementSibling();
+				obj = obj.nextElementSibling();
+				if (obj.ownText().equals("type")) 
+					System.out.println(obj.lastElementSibling().ownText());
 			}
 			
-			
-			//Document doc = Jsoup.parse
-			/*Element link = doc.select("a").first();
-
-			String text = doc.body().text(); // "An example link"
-			String linkHref = link.attr("href"); // "http://example.com/"
-			String linkText = link.text(); // "example""
-
-			String linkOuterH = link.outerHtml(); 
-				// "<a href="http://example.com"><b>example</b></a>"
-			String linkInnerH = link.html(); // "<b>example</b>"
-			System.out.println(html);*/
 			
 		} catch (Exception e) {
 			System.out.println(e.getClass().toString()+e.getMessage());
