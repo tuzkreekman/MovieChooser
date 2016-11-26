@@ -12,6 +12,6 @@ java -classpath "..\lib\mysql-connector-java-5.0.8-bin.jar;../webapps/movie_choo
 database:
 javac *.java
 //java -classpath "C:\Users\Zainab Khan\Desktop\EECS118\apache-tomcat-7.0.72\lib\mysql-connector-java-5.0.8-bin.jar;../lib/gson-2.8.0.jar;." uci.zainabk.database.Test
-java -classpath "..\lib\mysql-connector-java-5.0.8-bin.jar;../webapps/movie_chooser/WEB-INF/lib/gson-2.8.0.jar;../webapps/movie_chooser/WEB-INF/classes" uci.zainabk.database.Test
+java -classpath "..\lib\mysql-connector-java-5.0.8-bin.jar;../webapps/movie_chooser/WEB-INF/lib/gson-2.8.0.jar;../webapps/movie_chooser/WEB-INF/lib/jsoup-1.10.1.jar;../webapps/movie_chooser/WEB-INF/classes" uci.zainabk.database.Test
 
 

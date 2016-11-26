@@ -17,7 +17,7 @@ $(M):
 	javac $(CP) "$(LIB2)\gson-2.8.0.jar;$(CLASSES)" $(DIR)/$(M)/*.java
 
 $(TV): 
-	javac $(CP) "$(LIB)\jsp-api.jar;$(CLASSES)" $(DIR)/$(TV)/*.java
+	javac $(CP) "$(LIB)\jsp-api.jar;$(LIB2)\jsoup-1.10.1.jar;$(CLASSES)" $(DIR)/$(TV)/*.java
 
 $(I): 
 	javac $(CP) "$(LIB2)\gson-2.8.0.jar;$(CLASSES)" $(DIR)/$(I)/*.java
