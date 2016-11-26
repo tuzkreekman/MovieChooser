@@ -59,6 +59,7 @@
   
   <%
 	String funcID = request.getParameter("funcID");
+	out.println("<p>"+funcID+"</p>");
 	if (funcID==null) {;}
 	else if (funcID.equals("1")) {
 		String genre = request.getParameter("genre");
@@ -78,7 +79,22 @@
 		} /*if (!seed.equals("")) {
 			
 		}*/
-		ml.getMovies(params.toArray(new String[0]));
+		ArrayList<MovieSuggestion> movies = new MovieList().getMovies(params.toArray(new String[0]));
+		for (int i = 0; i <movies.size(); i++) {
+			MovieSuggestion current = movies.get(i);
+			MovieInfo mi = new MovieInfo(current.getTitle());
+			Movie m = mi.getMovie();
+			FavDatabase fdb = new FavDatabase(db.getConnection());
+			if (fdb.hasFav(id,m.id)) {
+				movies.remove(i);
+				out.println("<p>beentheredonethat</p>");
+			} else if (i > 10) movies.remove(i);
+		}
+		for (MovieSuggestion ms : movies) {
+			String title = ms.getTitle();
+			out.println("<p><a href=\"search.jsp?q="+title+"\">"+title+"</a></p>");
+			//out.println("<p>"+ms.getTitle()+"</p>");
+		}
 	}
   %>
 

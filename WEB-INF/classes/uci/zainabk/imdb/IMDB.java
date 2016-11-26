@@ -5,6 +5,8 @@ import com.google.gson.stream.*;
 import java.io.*;
 
 public class IMDB {
+	
+	/* Searches for IMDB ID given title */
 	public static String getID(String searchStr) {
 		JsonReader reader;
 		String inputStr = "", imdb="";

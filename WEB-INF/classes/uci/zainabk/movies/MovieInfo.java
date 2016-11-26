@@ -24,6 +24,8 @@ public class MovieInfo {
 	private ArrayList<String> tag = new ArrayList<String>();
 	private ArrayList<Genre> gBag = new ArrayList<Genre>();
 	
+	/*	Takes in title and searches for the IMDB id
+		Adds the movie to the database if it isn't there */
 	public MovieInfo(String searchStr) {
 		iMDB = IMDB.getID(searchStr);
 		if (iMDB==null || iMDB.equals("")) {
@@ -43,12 +45,16 @@ public class MovieInfo {
 		}
 	}
 	
+	/* 	Takes in title and searches for the IMDB id
+		Adds the movie to the database if it isn't there 
+		Loads all information it can get */
 	public MovieInfo(String searchStr, boolean autoLoad) {
 		this(searchStr);
 		if (iMDB==null) return;
 		if (autoLoad) loadAllInfo();
 	}
 	
+	/* Loads IMDB info, Netflix info, tropes, genres */
 	public void loadAllInfo() {
 		this.getInfoFromIMDB();
 		this.checkNetflix();

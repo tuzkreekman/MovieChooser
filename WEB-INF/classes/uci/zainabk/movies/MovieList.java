@@ -3,11 +3,13 @@ package uci.zainabk.movies;
 import java.net.*;
 import java.io.*;
 import com.google.gson.stream.*;
+import java.util.ArrayList;
 
 
 public class MovieList {
-	public void getMovies(String[] args) {
+	public ArrayList<MovieSuggestion> getMovies(String[] args) {
 		JsonReader reader;
+		ArrayList<MovieSuggestion> suggested = new ArrayList<MovieSuggestion>();
 		
 		try {
 			String inputStr = "https://api.themoviedb.org/3/discover/movie?"
@@ -30,7 +32,6 @@ public class MovieList {
 				
 			InputStream is = connection.getInputStream();
 			reader = new JsonReader(new InputStreamReader(is));
-			
 			try {
 				reader.beginObject();
 				while (reader.hasNext()) {
@@ -42,21 +43,23 @@ public class MovieList {
 						reader.beginArray();
 						while (reader.hasNext()) {
 							reader.beginObject();
+							MovieSuggestion ms = new MovieSuggestion();
 							while (reader.hasNext()) {
 								name = reader.nextName();
 								if (name.equals("genre_ids")) {
 									reader.beginArray();
-									while (reader.hasNext()) System.out.println(Genre.getGenre(reader.nextInt()));
+									while (reader.hasNext()) ms.addGenre(Genre.getGenre(reader.nextInt()));
 									reader.endArray();
-								} else if (name.equals("title")) System.out.println(reader.nextString());
+								} else if (name.equals("title")) ms.setTitle(reader.nextString());
 								else if (name.equals("video")) reader.nextBoolean();
 								else if (name.equals("adult")) reader.nextBoolean();
-								else if (name.equals("id")) reader.nextInt();
+								else if (name.equals("id")) ms.setID(reader.nextInt());
 								else if (name.equals("vote_count")) reader.nextInt();
 								else if (name.equals("vote_average")) reader.nextDouble();
-								else if (name.equals("popularity")) reader.nextDouble();
+								else if (name.equals("popularity")) ms.setPopularity(reader.nextDouble());
 								else { reader.nextString(); }
 							}
+							suggested.add(ms);
 							reader.endObject();
 						}
 						reader.endArray();
@@ -74,7 +77,7 @@ public class MovieList {
 		   ;
 		}
 		
-		
+		return suggested;
 		
 	}
 }
