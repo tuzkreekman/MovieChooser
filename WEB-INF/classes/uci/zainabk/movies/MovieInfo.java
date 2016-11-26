@@ -12,7 +12,7 @@ public class MovieInfo {
 	public static final String TROPELESS = "tropeless";
 	
 	
-	private boolean netflix = false, tropes = false;
+	private boolean netflix = false, tropes = false, genres=true;
 	private String iMDB = "";
 	private String title = "";
 	private String img = "";
@@ -22,6 +22,7 @@ public class MovieInfo {
 	private int metaScore = 0;
 	private double imdbScore = 0;
 	private ArrayList<String> tag = new ArrayList<String>();
+	private ArrayList<Genre> gBag = new ArrayList<Genre>();
 	
 	public MovieInfo(String searchStr) {
 		iMDB = IMDB.getID(searchStr);
@@ -52,6 +53,7 @@ public class MovieInfo {
 		this.getInfoFromIMDB();
 		this.checkNetflix();
 		this.loadTropes();
+		this.loadGenres();
 	}
 	
 	public void getInfoFromIMDB() {
@@ -192,9 +194,82 @@ public class MovieInfo {
 		}
 	}
 	
+	public void loadGenres() {
+		if (iMDB==null) return;
+		
+		JsonReader reader;
+		genres = true;
+					
+		try {
+			String inputStr = "https://api.themoviedb.org/3/find/"+iMDB+"?api_key=dbd62543493eb0c4f556525b0dd41010&language=en-US&external_source=imdb_id";
+			
+			URL url = new URL(inputStr);
+			URLConnection connection = url.openConnection();
+			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+				
+			InputStream is = connection.getInputStream();
+			reader = new JsonReader(new InputStreamReader(is));
+			
+			reader.beginObject();
+			while (reader.hasNext()) {
+				String name = reader.nextName();
+				if (name.equals("movie_results")) {
+					reader.beginArray();
+					while (reader.hasNext()) {
+						reader.beginObject();
+						while (reader.hasNext()) {
+							name = reader.nextName();
+							if (name.equals("genre_ids")) {
+								reader.beginArray();
+								while (reader.hasNext()) gBag.add(Genre.getGenre(reader.nextInt()));
+								reader.endArray();
+							} else if (name.equals("video")) reader.nextBoolean();
+							else if (name.equals("adult")) reader.nextBoolean();
+							else if (name.equals("id")) reader.nextInt();
+							else if (name.equals("vote_count")) reader.nextInt();
+							else if (name.equals("vote_average")) reader.nextDouble();
+							else if (name.equals("popularity")) reader.nextDouble();
+							else { reader.nextString(); }
+						}
+						reader.endObject();
+					}
+					reader.endArray();
+				} else {
+					reader.beginArray();
+					while (reader.hasNext()) {
+						reader.beginObject();
+						while (reader.hasNext()) {
+							name = reader.nextName();
+							if (name.equals("genre_ids")) {
+								reader.beginArray();
+								while (reader.hasNext()) reader.nextInt();
+								reader.endArray();
+							} else if (name.equals("video")) reader.nextBoolean();
+							else if (name.equals("adult")) reader.nextBoolean();
+							else if (name.equals("id")) reader.nextInt();
+							else if (name.equals("vote_count")) reader.nextInt();
+							else if (name.equals("vote_average")) reader.nextDouble();
+							else if (name.equals("popularity")) reader.nextDouble();
+							else { reader.nextString(); }
+						}
+						reader.endObject();
+					}
+					reader.endArray();
+				}
+			}
+			reader.endObject();
+			reader.close();
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
+			genres = false;
+		} finally {
+		   ;
+		}
+	}
 	
 	/* Access methods */
 	public boolean isOnNetflix() 	{ return netflix; 	}
+	public boolean hasGenres()	 	{ return genres; 	}
 	public boolean foundTropes() 	{ return tropes; 	}
 	public String getIMDBID() 		{ return iMDB;		}
 	public String getTitle() 		{ return title;		}
@@ -210,6 +285,10 @@ public class MovieInfo {
 			if (tag.indexOf(TROPELESS)==-1)
 				tag.add(TROPELESS);
 		return tag;
+	}
+	
+	public ArrayList<Genre> getGenres() {
+		return gBag;
 	}
 	
 }

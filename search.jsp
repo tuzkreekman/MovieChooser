@@ -105,6 +105,9 @@
 			for (Object s: mi.getTags().toArray()) out.println("<li>"+s.toString()+"</li>");
 			out.println("</ul>");
 			
+			out.println("<h2>Genres</h2><ul>");
+			for (Object s: mi.getGenres().toArray()) out.println("<li>"+s.toString()+"</li>");
+			out.println("</ul>");
 		}
 	}
   %>
