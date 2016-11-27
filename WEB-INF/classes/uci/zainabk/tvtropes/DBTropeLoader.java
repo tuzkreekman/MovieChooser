@@ -10,8 +10,8 @@ import org.jsoup.select.Elements;
 
 public class DBTropeLoader {
 
-	public static ArrayList<String> getFilmTropes(String urlStr) {
-		ArrayList<String> bag = new ArrayList<String>();
+	public static ArrayList<Trope> getFilmTropes(String urlStr) {
+		ArrayList<Trope> bag = new ArrayList<Trope>();
 		try{
 			URL url = new URL(urlStr);
 			URLConnection connection = url.openConnection();
@@ -25,20 +25,30 @@ public class DBTropeLoader {
 			whitelist.addTags("table");
 			whitelist.addTags("tr");
 			whitelist.addTags("td");
+			whitelist.addTags("a");
+			whitelist.addAttributes("a","href");
 			Cleaner cleaner = new Cleaner(whitelist);
 			
 			doc = cleaner.clean(doc);
 			
 			Element table = doc.select("table").first();
-			Iterator<Element> rows = table.select("tr").iterator();
+			Elements rows = table.select("tr");
 			
 			for (Element row : table.select("tr")) {
+				if (row==rows.first()||row==rows.last()) continue;
 				Elements objs = row.select("td");
 				Element obj = objs.first();
 				obj = obj.nextElementSibling();
 				obj = obj.nextElementSibling();
-				if (obj.ownText().equals("type")) 
-					System.out.println(obj.lastElementSibling().ownText());
+				if (obj.ownText().equals("type")) {
+					Element link = obj.lastElementSibling().select("a").first();
+					String ur = link.attr("href");
+					ur = convertDBURI(ur);
+					if (ur!=null) {
+						bag.add(new Trope(ur));
+						//bag.add(new Trope(ur,ur));
+					}
+				}
 			}
 			
 			
@@ -46,6 +56,12 @@ public class DBTropeLoader {
 			System.out.println(e.getClass().toString()+e.getMessage());
 		} finally {;}
 		return bag;
+	}
+	
+	public static String convertDBURI(String str) {
+		String ignore = "http://dbtropes.org/resource/";
+		String beginning = "http://tvtropes.org/pmwiki/pmwiki.php/";
+		return beginning + str.substring(ignore.length());
 	}
   
 }
