@@ -59,7 +59,7 @@ public class MovieInfo {
 	public void loadAllInfo() {
 		this.getInfoFromIMDB();
 		this.checkNetflix();
-		this.loadTropes2();
+		this.loadTropes();
 		this.loadGenres();
 	}
 	
@@ -168,7 +168,10 @@ public class MovieInfo {
 		}
 	}
 	
-	public void loadTropes2() {
+	public void loadTropes() {
+		if (iMDB==null) return;
+		
+		if (tag.indexOf(TROPELESS)!=-1) tag.remove(TROPELESS);
 		tropes = true;
 		String url = "";
 		try {
@@ -184,36 +187,22 @@ public class MovieInfo {
 			tag.add(t.title);
 	}
 	
-	public void loadTropes() {
-		if (iMDB==null) return;
+	public ArrayList<String> loadTropeURLs() {
+		if (iMDB==null) return null;
 		
-		JsonReader reader;
-		if (tag.indexOf(TROPELESS)!=-1) tag.remove(TROPELESS);
-		tropes = true;
-					
+		ArrayList<String> bag = new ArrayList<String>();
+		String url = "";
 		try {
-			String inputStr = "http://localhost:8080/movie_chooser/linker.jsp?q="+URLEncoder.encode(title,"utf-8");
-		
-			URL url = new URL(inputStr);
-			URLConnection connection = url.openConnection();
-			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-				
-			InputStream is = connection.getInputStream();
-			reader = new JsonReader(new InputStreamReader(is));
-			
-			reader.beginObject();
-			reader.nextName();
-			reader.beginArray();
-			while (reader.hasNext()) tag.add(reader.nextString());
-			reader.endArray();
-			reader.endObject();
-			reader.close();
-		} catch (Exception e) {
-			System.out.print(e.getMessage());
-			tropes = false;
-		} finally {
-		   ;
+			url = TVTropeFinder.findTropeURL(title);
+			url = DBTropeLoader.convertURIDB(url);
+		} catch (Exception e) { 
+			System.out.println("Load trope URLs failed: "+e.getMessage());
+			return null;
 		}
+		System.out.println("Loading trope URLs from "+url);
+		for (Trope t : DBTropeLoader.getFilmTropeURLs(url))
+			bag.add(t.title);
+		return bag;
 	}
 	
 	public void loadGenres() {

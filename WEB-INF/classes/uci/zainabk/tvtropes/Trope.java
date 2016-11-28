@@ -15,29 +15,7 @@ public class Trope {
 	public Trope(String urlStr) {
 		URL = urlStr;
 		String title = "";
-		/*
-		try{
-			URL url = new URL(urlStr);
-			URLConnection connection = url.openConnection();
-			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-				
-			String baseUri = "tvtropes.org";
-			InputStream is = connection.getInputStream();
-			Document doc = Jsoup.parse(is,null,baseUri);
-			
-			Whitelist whitelist = new Whitelist();
-			whitelist.addTags("title");
-			Cleaner cleaner = new Cleaner(whitelist);
-			
-			doc = cleaner.clean(doc);
-			title = doc.select("title").first().text();
-		} catch (Exception e) {;}
 		
-		if (title.equals("")) {
-			String[] parts = urlStr.split("/");
-			title = (parts[parts.length-1]);
-		}
-		this.title = title;*/
 		try{
 			URL url = new URL(urlStr);
 			URLConnection connection = url.openConnection();
@@ -57,7 +35,7 @@ public class Trope {
 				break;
 			}
 			br.close();
-			//System.out.println(urlStr);
+			
 		} catch (Exception e) {;}
 		if (title.equals("")) {
 			String[] parts = urlStr.split("/");

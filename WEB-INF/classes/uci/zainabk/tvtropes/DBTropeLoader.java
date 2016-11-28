@@ -9,8 +9,7 @@ import org.jsoup.nodes.*;
 import org.jsoup.select.Elements;
 
 public class DBTropeLoader {
-
-	public static ArrayList<Trope> getFilmTropes(String urlStr) {
+	private static ArrayList<Trope> getTropes(String urlStr, boolean urlOnly) {
 		ArrayList<Trope> bag = new ArrayList<Trope>();
 		try{
 			URL url = new URL(urlStr);
@@ -46,8 +45,8 @@ public class DBTropeLoader {
 					else if (ur.equals("http://skipforward.net/skipforward/resource/seeder/skipinions/ItemName")) continue;
 					ur = convertDBURI(ur);
 					if (ur!=null) {
-						bag.add(new Trope(ur));
-						//bag.add(new Trope(ur,ur));
+						if (urlOnly) bag.add(new Trope(ur,ur));
+						else bag.add(new Trope(ur));
 					}
 				}
 			}
@@ -57,6 +56,14 @@ public class DBTropeLoader {
 			System.out.println(e.getClass().toString()+e.getMessage());
 		} finally {;}
 		return bag;
+	}
+
+	public static ArrayList<Trope> getFilmTropes(String urlStr) {
+		return getTropes(urlStr, false);
+	}
+	
+	public static ArrayList<Trope> getFilmTropeURLs(String urlStr) {
+		return getTropes(urlStr, true);
 	}
 	
 	public static String convertDBURI(String str) {
