@@ -59,7 +59,6 @@
   
   <%
 	String funcID = request.getParameter("funcID");
-	out.println("<p>"+funcID+"</p>");
 	if (funcID==null) {;}
 	else if (funcID.equals("1")) {
 		String genre = request.getParameter("genre");

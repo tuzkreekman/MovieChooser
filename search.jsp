@@ -43,7 +43,7 @@
 	if (searchStr==null) out.println("<meta http-equiv=\"refresh\" content=\"0; URL='index.jsp'\" />");
 	else {
 		System.out.println("Search str: "+searchStr);
-		MovieInfo mi = new MovieInfo(searchStr,true);
+		MovieInfo mi = new MovieInfo(searchStr,db,true);
 		String iMDB = mi.getIMDBID();
 		if (iMDB==null) {
 			out.println("<h1>Movie not found</h1>");

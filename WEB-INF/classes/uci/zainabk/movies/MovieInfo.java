@@ -2,6 +2,7 @@ package uci.zainabk.movies;
 
 import uci.zainabk.imdb.*;
 import uci.zainabk.database.*;
+import uci.zainabk.tvtropes.*;
 import java.net.*;
 import java.io.*;
 import com.google.gson.*;
@@ -26,13 +27,13 @@ public class MovieInfo {
 	
 	/*	Takes in title and searches for the IMDB id
 		Adds the movie to the database if it isn't there */
-	public MovieInfo(String searchStr) {
+	public MovieInfo(String searchStr, Database db) {
 		iMDB = IMDB.getID(searchStr);
 		if (iMDB==null || iMDB.equals("")) {
 			iMDB = null;
 			return;
 		}
-		MovieDatabase mdb = new MovieDatabase(new Database().getConnection());
+		MovieDatabase mdb = new MovieDatabase(db.getConnection());
 		try {
 			m = mdb.getMovie(-1,iMDB);
 			if (m==null) {
@@ -48,8 +49,8 @@ public class MovieInfo {
 	/* 	Takes in title and searches for the IMDB id
 		Adds the movie to the database if it isn't there 
 		Loads all information it can get */
-	public MovieInfo(String searchStr, boolean autoLoad) {
-		this(searchStr);
+	public MovieInfo(String searchStr, Database db, boolean autoLoad) {
+		this(searchStr,db);
 		if (iMDB==null) return;
 		if (autoLoad) loadAllInfo();
 	}
@@ -58,7 +59,7 @@ public class MovieInfo {
 	public void loadAllInfo() {
 		this.getInfoFromIMDB();
 		this.checkNetflix();
-		this.loadTropes();
+		this.loadTropes2();
 		this.loadGenres();
 	}
 	
@@ -167,6 +168,15 @@ public class MovieInfo {
 		}
 	}
 	
+	public void loadTropes2() {
+		tropes = true;
+		String url = "";
+		try {
+			url = TVTropeFinder.findTropeURL(title);
+		} catch (Exception e) { tropes = false; return;}
+		for (Trope t : DBTropeLoader.getFilmTropes(url))
+			tag.add(t.title);
+	}
 	
 	public void loadTropes() {
 		if (iMDB==null) return;

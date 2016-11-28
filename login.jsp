@@ -19,8 +19,8 @@
   int id = Login.getUserID();
   String thing;
   if (id!=-1) {
-	  out.println("<meta http-equiv=\"refresh\" content=\"0; URL='login.jsp'\" />");
-  } 
+	  out.println("<meta http-equiv=\"refresh\" content=\"0; URL='user.jsp'\" />");
+  }
   Database db = new Database();
   UserDatabase udb = new UserDatabase(db.getConnection());
   if (id!=-1) thing = (udb.getUser(Integer.toString(id),true).name);

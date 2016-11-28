@@ -35,7 +35,6 @@ public class DBTropeLoader {
 			Elements rows = table.select("tr");
 			
 			for (Element row : table.select("tr")) {
-				if (row==rows.first()||row==rows.last()) continue;
 				Elements objs = row.select("td");
 				Element obj = objs.first();
 				obj = obj.nextElementSibling();
@@ -43,6 +42,8 @@ public class DBTropeLoader {
 				if (obj.ownText().equals("type")) {
 					Element link = obj.lastElementSibling().select("a").first();
 					String ur = link.attr("href");
+					if (ur.equals("http://dbtropes.org/ont/TVTItem")) continue;
+					else if (ur.equals("http://skipforward.net/skipforward/resource/seeder/skipinions/ItemName")) continue;
 					ur = convertDBURI(ur);
 					if (ur!=null) {
 						bag.add(new Trope(ur));
@@ -61,6 +62,12 @@ public class DBTropeLoader {
 	public static String convertDBURI(String str) {
 		String ignore = "http://dbtropes.org/resource/";
 		String beginning = "http://tvtropes.org/pmwiki/pmwiki.php/";
+		return beginning + str.substring(ignore.length());
+	}
+	
+	public static String convertURIDB(String str) {
+		String beginning = "http://dbtropes.org/resource/";
+		String ignore = "http://tvtropes.org/pmwiki/pmwiki.php/";
 		return beginning + str.substring(ignore.length());
 	}
   

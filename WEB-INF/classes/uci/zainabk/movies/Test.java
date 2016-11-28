@@ -1,6 +1,7 @@
 package uci.zainabk.movies;
 
 import uci.zainabk.database.Movie;
+import uci.zainabk.database.Database;
 
 public class Test {
 	public static void main(String[] args) {
@@ -8,7 +9,7 @@ public class Test {
 			System.out.println("Requires 1 argument");
 			return;
 		}
-		MovieInfo tester = new MovieInfo(args[0],true);
+		MovieInfo tester = new MovieInfo(args[0],new Database(),true);
 		System.out.println(tester.getTitle());
 		System.out.printf("IMDB: %s\n",tester.getIMDBID());
 		System.out.printf("IMDB Score: %f\n",tester.getIMDBScore());

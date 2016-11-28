@@ -11,8 +11,8 @@ public class Database {
     // build a default connection to database
         String driver = "com.mysql.jdbc.Driver";
         String url = "jdbc:mysql://127.0.0.1:3306/movie_chooser";
-        String user = "movie";
-        String password = "chooser"; 
+        String user = "termproject";
+        String password = "eecs118tp"; 
 		Connection con = null;
         
         try {
