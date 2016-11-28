@@ -5,60 +5,60 @@ import java.util.Arrays;
 
 public class LoginTest{
 	public static void main(String[] args) {
-		if (args.length==0) {
-			System.out.println("Missing inputs");
-			return;
-		} else if (args[0].equals("1")) loginTest(Arrays.copyOfRange(args,1,3));
-		else if (args[0].equals("2")) loadUserTest();
-		else if (args[0].equals("3")) logoutTest();
-		else {
-			System.out.println("Unexpected inputs");
-			return;
-		}
-		
+		System.out.println("Output "+((unitTest())?"":" not ")+"as Expected");
 	}
 	
-	public static void loginTest(String[] args) {
+	private static boolean unitTest() {
+		String[] login = {"Ginevra","Weasley"};
+		if (loginTest(login)!=0) return false;
+		if (loadUserTest()!=1) return false;
+		if (logoutTest()!=-1) return false;
+		if (loginTest(login)!=0) return false;
+		return true;
+	}
+	
+	public static int loginTest(String[] args) {
 		if (args.length!=2) {
 			System.out.println("Must provide username and password (for user database)");
-			return;
+			return -1;
 		}
+		int id = -1;
 		try{
 			Database db = new Database();
-			System.out.println(Login.login(db,args[0],args[1]));
+			Login.login(db,args[0],args[1]);
 			db.close();
+			id = 0;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			System.out.println("OH WELL");
 		} finally{
-			;
+			return id;
 		}
 	}
 	
-	public static void loadUserTest() {
+	public static int loadUserTest() {
+		int id = -1;
 		try{
 			Database db = new Database();
-			System.out.println(Login.getUserID());
+			id = (Login.getUserID());
 			db.close();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			System.out.println("OH WELL");
 		} finally{
-			;
+			return id;
 		}
 	}
 	
-	public static void logoutTest() {
+	public static int logoutTest() {
+		int id = 0;
 		try{
 			Login.logout();
 			Database db = new Database();
-			System.out.println(Login.getUserID());
+			id = (Login.getUserID());
 			db.close();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			System.out.println("OH WELL");
 		} finally{
-			;
+			return id;
 		}
 	}
 	
