@@ -173,7 +173,13 @@ public class MovieInfo {
 		String url = "";
 		try {
 			url = TVTropeFinder.findTropeURL(title);
-		} catch (Exception e) { tropes = false; return;}
+			url = DBTropeLoader.convertURIDB(url);
+		} catch (Exception e) { 
+			tropes = false; 
+			System.out.println("Load trope failed: "+e.getMessage());
+			return;
+		}
+		System.out.println("found"+url);
 		for (Trope t : DBTropeLoader.getFilmTropes(url))
 			tag.add(t.title);
 	}

@@ -22,7 +22,7 @@
   <%@ page import="uci.zainabk.database.*"%>
   <%@ page import="uci.zainabk.imdb.*"%>
   <%@ page import="uci.zainabk.movies.*"%>
-  
+  <%@ page import="uci.zainabk.tvtropes.*"%>  
 
   <%
   int id = Login.getUserID();
@@ -102,7 +102,8 @@
 			if (!mi.foundTropes()) out.println("<p>Tropes failed</p>");
 			
 			out.println("<h2>Tags</h2><ul>");
-			for (Object s: mi.getTags().toArray()) out.println("<li>"+s.toString()+"</li>");
+			for (String s: mi.getTags()) out.println("<li>"+s+"</li>");
+			out.println("len"+mi.getTags().size());
 			out.println("</ul>");
 			
 			out.println("<h2>Genres</h2><ul>");

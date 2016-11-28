@@ -4,7 +4,7 @@ package uci.zainabk.database;
 public class UserTest{
 	public static void main(String[] args) {
 		try {
-			System.out.println("Begin USERTEST: Expect (LOGGED IN), F, T")
+			System.out.println("Begin USERTEST: Expect (LOGGED IN), F, T");
 			Database db = new Database();
 			UserDatabase udb = new UserDatabase(db.getConnection());
 			int id = Login.getUserID();
