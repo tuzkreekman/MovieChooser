@@ -3,6 +3,7 @@ package uci.zainabk.movies;
 import uci.zainabk.imdb.*;
 import uci.zainabk.database.*;
 import uci.zainabk.tvtropes.*;
+import uci.zainabk.csm.*;
 import java.net.*;
 import java.io.*;
 import com.google.gson.*;
@@ -13,7 +14,7 @@ public class MovieInfo {
 	public static final String TROPELESS = "tropeless";
 	
 	
-	private boolean netflix = false, tropes = false, genres=true;
+	private boolean netflix = false, tropes = false, genres=false, commonsense=false;
 	private String iMDB = "";
 	private String title = "";
 	private String img = "";
@@ -21,6 +22,7 @@ public class MovieInfo {
 	private Movie m = null;
 	private int year = 0;
 	private int metaScore = 0;
+	private int csrating = 0;
 	private double imdbScore = 0;
 	private ArrayList<String> tag = new ArrayList<String>();
 	private ArrayList<Genre> gBag = new ArrayList<Genre>();
@@ -59,6 +61,7 @@ public class MovieInfo {
 	public void loadAllInfo() {
 		this.getInfoFromIMDB();
 		this.checkNetflix();
+		this.loadCommonSense();
 		this.loadTropes();
 		this.loadGenres();
 	}
@@ -187,6 +190,22 @@ public class MovieInfo {
 			tag.add(t.title);
 	}
 	
+	public void loadCommonSense() {
+		if (iMDB==null) return;
+		
+		commonsense = true;
+		String url = "";
+		try{
+			url = CSMFinder.findCSMURL(title);
+		} catch (Exception e) {
+			System.out.println("CSM Finding failed: "+e.getMessage());
+			commonsense = false;
+			return;
+		}
+		System.out.println("Loading commonsense from "+url);
+		csrating = CommonSenseLoader.getAgeRating(url);
+	}
+	
 	public ArrayList<String> loadTropeURLs() {
 		if (iMDB==null) return null;
 		
@@ -279,17 +298,19 @@ public class MovieInfo {
 	}
 	
 	/* Access methods */
-	public boolean isOnNetflix() 	{ return netflix; 	}
-	public boolean hasGenres()	 	{ return genres; 	}
-	public boolean foundTropes() 	{ return tropes; 	}
-	public String getIMDBID() 		{ return iMDB;		}
-	public String getTitle() 		{ return title;		}
-	public String getImage() 		{ return img;		}
-	public String getAgeRating() 	{ return ageRating;	}
-	public int getYear()			{ return year;		}
-	public int getMetaScore() 		{ return metaScore;	}
-	public double getIMDBScore()	{ return imdbScore;	}
-	public Movie getMovie()			{ return m;			}
+	public boolean isOnNetflix() 	{ return netflix;	 	}
+	public boolean hasGenres()	 	{ return genres; 		}
+	public boolean foundTropes() 	{ return tropes; 		}
+	public boolean foundCSRating() 	{ return commonsense; 	}
+	public String getIMDBID() 		{ return iMDB;			}
+	public String getTitle() 		{ return title;			}
+	public String getImage() 		{ return img;			}
+	public String getAgeRating() 	{ return ageRating;		}
+	public int getYear()			{ return year;			}
+	public int getMetaScore() 		{ return metaScore;		}
+	public double getIMDBScore()	{ return imdbScore;		}
+	public Movie getMovie()			{ return m;				}
+	public int getCSAgeRating() 	{ return csrating;		}
 	
 	public ArrayList<String> getTags() {
 		if (!tropes) 

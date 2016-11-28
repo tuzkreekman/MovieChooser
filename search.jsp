@@ -90,6 +90,7 @@
 			
 			out.println("<h2>General Info</h2>");
 			out.println("<p>Rating "+mi.getAgeRating()+"</p>");
+			out.println("<p>Common Sense Rating "+((mi.foundCSRating())?mi.getCSAgeRating():"not found")+"</p>");
 			
 			out.println("<h2>Reviews</h2>");
 			if (mi.getMetaScore()!=0) out.println("<p>Metacritic "+mi.getMetaScore()+"</p>");
