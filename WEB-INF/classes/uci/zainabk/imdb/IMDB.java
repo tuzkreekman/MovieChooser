@@ -13,7 +13,7 @@ public class IMDB {
 		
 		try{
 			inputStr = "http://www.omdbapi.com/?t="+URLEncoder.encode(searchStr,"utf-8");
-			System.out.println("<p>"+inputStr+"</p>");
+			System.out.println(inputStr);
 		} catch (Exception e) {
 			System.out.println(e.getClass().toString()+e.getMessage());
 		}
@@ -56,7 +56,7 @@ public class IMDB {
 		if (!found) {
 			try {
 				inputStr = "http://www.omdbapi.com/?s="+URLEncoder.encode(searchStr,"utf-8");
-				System.out.println("<p>"+inputStr+"</p>");
+				System.out.println(inputStr);
 			
 			
 				URL url = new URL(inputStr);
@@ -113,7 +113,7 @@ public class IMDB {
 		
 		try{
 			inputStr = "http://www.omdbapi.com/?i="+URLEncoder.encode(searchStr,"utf-8");
-			System.out.println("<p>"+inputStr+"</p>");
+			System.out.println(inputStr);
 		} catch (Exception e) {
 			System.out.println(e.getClass().toString()+e.getMessage());
 		}

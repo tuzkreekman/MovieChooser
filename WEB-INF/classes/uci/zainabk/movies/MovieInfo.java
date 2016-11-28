@@ -179,7 +179,7 @@ public class MovieInfo {
 			System.out.println("Load trope failed: "+e.getMessage());
 			return;
 		}
-		System.out.println("found"+url);
+		System.out.println("Loading tropes from "+url);
 		for (Trope t : DBTropeLoader.getFilmTropes(url))
 			tag.add(t.title);
 	}

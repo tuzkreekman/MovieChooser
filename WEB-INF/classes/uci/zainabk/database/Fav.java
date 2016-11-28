@@ -10,7 +10,8 @@ public class Fav {
 	}
 	
 	public String toString() {
-		return "User "+Integer.toString(user_id)+" likes movie "+Integer.toString(movie_id)+Integer.toString(opinion);
+		return "User "+Integer.toString(user_id)+" likes movie "
+				+Integer.toString(movie_id)+" with feeling "+Integer.toString(opinion);
 	}
 	
 	public boolean equals(Fav oth) {

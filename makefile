@@ -8,7 +8,7 @@ LIB2 = C:\Users\Zainab Khan\Desktop\EECS118\apache-tomcat-7.0.72\webapps\movie_c
 CP = -classpath
 CLASSES = WEB-INF/classes
 
-all: $(DB) $(TV) $(I) $(M)
+all: $(I) $(DB) $(TV) $(M)
 
 $(DB):
 	javac $(CP) "$(CLASSES)" $(DIR)/$(DB)/*.java
