@@ -81,7 +81,7 @@
 		ArrayList<MovieSuggestion> movies = new MovieList().getMovies(params.toArray(new String[0]));
 		for (int i = 0; i <movies.size(); i++) {
 			MovieSuggestion current = movies.get(i);
-			MovieInfo mi = new MovieInfo(current.getTitle());
+			MovieInfo mi = new MovieInfo(current.getTitle(),db);
 			Movie m = mi.getMovie();
 			FavDatabase fdb = new FavDatabase(db.getConnection());
 			if (fdb.hasFav(id,m.id)) {

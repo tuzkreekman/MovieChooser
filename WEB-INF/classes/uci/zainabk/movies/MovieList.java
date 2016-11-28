@@ -57,7 +57,10 @@ public class MovieList {
 								else if (name.equals("vote_count")) reader.nextInt();
 								else if (name.equals("vote_average")) reader.nextDouble();
 								else if (name.equals("popularity")) ms.setPopularity(reader.nextDouble());
-								else { reader.nextString(); }
+								else {
+									if (reader.peek()==JsonToken.NULL) reader.nextNull();
+									else reader.nextString();
+								}
 							}
 							suggested.add(ms);
 							reader.endObject();

@@ -1,0 +1,18 @@
+import uci.zainabk.imdb.*;
+import uci.zainabk.database.*;
+import uci.zainabk.movies.*;
+import uci.zainabk.tvtropes.*;
+
+public class UnitTest {
+	public static void main(String[] args) {
+		
+
+	}
+}
+
+
+/// common sense media
+/// look for first csm-green-age in div (<div class="csm-green-age">)
+
+
+///encode titles in calls to other stuff
