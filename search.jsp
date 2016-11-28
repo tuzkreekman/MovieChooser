@@ -14,11 +14,6 @@
 
   <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
   <%@ page import="java.util.*"%>
-  <%@ page import="java.io.*" %>
-  <%@ page import="java.sql.*"%>
-  <%@ page import="java.net.*"%>
-  <%@ page import="com.google.gson.*"%>
-  <%@ page import="com.google.gson.stream.*"%>
   <%@ page import="uci.zainabk.database.*"%>
   <%@ page import="uci.zainabk.imdb.*"%>
   <%@ page import="uci.zainabk.movies.*"%>

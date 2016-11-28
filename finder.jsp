@@ -14,11 +14,6 @@
 
   <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
   <%@ page import="java.util.*"%>
-  <%@ page import="java.io.*" %>
-  <%@ page import="java.sql.*"%>
-  <%@ page import="java.net.*"%>
-  <%@ page import="com.google.gson.*"%>
-  <%@ page import="com.google.gson.stream.*"%>
   <%@ page import="uci.zainabk.database.*"%>
   <%@ page import="uci.zainabk.movies.*"%>
   <%@ page import="uci.zainabk.imdb.*"%>
@@ -86,13 +81,11 @@
 			FavDatabase fdb = new FavDatabase(db.getConnection());
 			if (fdb.hasFav(id,m.id)) {
 				movies.remove(i);
-				out.println("<p>beentheredonethat</p>");
 			} else if (i > 10) movies.remove(i);
 		}
 		for (MovieSuggestion ms : movies) {
 			String title = ms.getTitle();
 			out.println("<p><a href=\"search.jsp?q="+title+"\">"+title+"</a></p>");
-			//out.println("<p>"+ms.getTitle()+"</p>");
 		}
 	}
   %>
