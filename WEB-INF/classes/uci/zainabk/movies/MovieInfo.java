@@ -62,7 +62,7 @@ public class MovieInfo {
 		this.getInfoFromIMDB();
 		this.checkNetflix();
 		this.loadCommonSense();
-		this.loadTropes();
+		this.loadTropes2();
 		this.loadGenres();
 	}
 	
@@ -188,6 +188,24 @@ public class MovieInfo {
 		System.out.println("Loading tropes from "+url);
 		for (Trope t : DBTropeLoader.getFilmTropes(url))
 			tag.add(t.title);
+	}
+	
+	public void loadTropes2() {
+		if (iMDB==null) return;
+		
+		if (tag.indexOf(TROPELESS)!=-1) tag.remove(TROPELESS);
+		tropes = true;
+		String url = "";
+		try {
+			url = TVTropeFinder.findTropeURL(title);
+		} catch (Exception e) { 
+			tropes = false; 
+			System.out.println("Load trope failed: "+e.getMessage());
+			return;
+		}
+		System.out.println("Loading tropes from "+url);
+		for (String t : TVTropeLoader.getTropes(url))
+			tag.add(t);
 	}
 	
 	public void loadCommonSense() {

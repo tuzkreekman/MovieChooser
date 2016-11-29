@@ -96,10 +96,11 @@
 			out.println("<p>Netflix: "+((mi.isOnNetflix())? "available":"unavailable")+"</p>");
 			
 			if (!mi.foundTropes()) out.println("<p>Tropes failed</p>");
-			
+			/*else {
+				out.println("<p><a href=\"tropes.jsp?q="+searchStr+"\">See tropes</a></p>");
+			}*/
 			out.println("<h2>Tags</h2><ul>");
-			for (String s: mi.getTags()) out.println("<li>"+s+"</li>");
-			out.println("len"+mi.getTags().size());
+			for (Object s: mi.getTags().toArray()) out.println("<li>"+s.toString()+"</li>");
 			out.println("</ul>");
 			
 			out.println("<h2>Genres</h2><ul>");
