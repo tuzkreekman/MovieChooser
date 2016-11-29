@@ -84,8 +84,8 @@
 				out.println("<img src=\""+mi.getImage()+"\" alt=\""+mi.getImage()+"\">");
 			
 			out.println("<h2>General Info</h2>");
-			out.println("<p>Rating "+mi.getAgeRating()+"</p>");
-			out.println("<p>Common Sense Rating "+((mi.foundCSRating())?mi.getCSAgeRating():"not found")+"</p>");
+			out.println("<p>MPAA: "+mi.getAgeRating()+"</p>");
+			out.println("<p>CommonSenseMedia: "+((mi.foundCSRating())?mi.getCSAgeRating()+"+":"not found")+"</p>");
 			
 			out.println("<h2>Reviews</h2>");
 			if (mi.getMetaScore()!=0) out.println("<p>Metacritic "+mi.getMetaScore()+"</p>");
@@ -95,6 +95,10 @@
 			out.println("<h2>Where to Watch</h2>");
 			out.println("<p>Netflix: "+((mi.isOnNetflix())? "available":"unavailable")+"</p>");
 			
+			out.println("<h2>Genres</h2><ul>");
+			for (Object s: mi.getGenres().toArray()) out.println("<li>"+s.toString()+"</li>");
+			out.println("</ul>");
+			
 			if (!mi.foundTropes()) out.println("<p>Tropes failed</p>");
 			/*else {
 				out.println("<p><a href=\"tropes.jsp?q="+searchStr+"\">See tropes</a></p>");
@@ -103,9 +107,7 @@
 			for (Object s: mi.getTags().toArray()) out.println("<li>"+s.toString()+"</li>");
 			out.println("</ul>");
 			
-			out.println("<h2>Genres</h2><ul>");
-			for (Object s: mi.getGenres().toArray()) out.println("<li>"+s.toString()+"</li>");
-			out.println("</ul>");
+			
 		}
 	}
   %>

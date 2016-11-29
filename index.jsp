@@ -23,10 +23,30 @@
   } else thing = ("Login");
   %>
   <bar:horizontal_bar loggedin="<%=thing%>"/>
-
-
-  <h1>Welcome to MovieChooser!</h1>
   
+  <h1>Welcome to MovieHunter!</h1>
   
+  <h2>How To</h2>
+  <p>To search for a movie, search for its title in the search bar above. 
+  To keep track of movies seen, and to get personalized recommendations,
+  create an account/log in. To find a new movie, select a genre, age group, and/or
+  movie seed to get a movie FOR YOU.</p>
+  
+  <h2>About</h2>
+  <p>MovieHunter would like to acknowledge the following resources that made this task easier</p>
+  
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://netflixroulette.net/api/">NetflixRoulette</a></p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.omdbapi.com/">OMDB</a></p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.themoviedb.org/">TMDB</a></p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.google.com">Google</a></p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://jsoup.org">Jsoup</a></p>
+  
+  <p>The following resources had useful/nonexistent information but useless APIs</p>
+  
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.commonsensemedia.org/">CommonSenseMedia</a></p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.themoviedb.org/">TVTropes</a></p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.themoviedb.org/">DBTropes</a></p>
+  
+  <p>Also, of course, shoutout to Professor Sheu and TA Bryan Chou. Thanks for an interesting class and a busy, productive quarter.</p>
   </body>
 </html>

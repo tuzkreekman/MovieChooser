@@ -11,8 +11,6 @@ public class UnitTest {
 }
 
 
-/// common sense media
-/// look for first csm-green-age in div (<div class="csm-green-age">)
 
 
 ///encode titles in calls to other stuff
