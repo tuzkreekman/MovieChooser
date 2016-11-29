@@ -1,16 +1,12 @@
-import uci.zainabk.imdb.*;
-import uci.zainabk.database.*;
-import uci.zainabk.movies.*;
-import uci.zainabk.tvtropes.*;
+To Do:
+- Choose top of suggested based on tropes/ratings
+- Check if needed: encode title in calls to other functions (for url)
 
-public class UnitTest {
-	public static void main(String[] args) {
-		
+Possibly:
+- Amazon
+- RottenTomatoes (seems simple enough)
 
-	}
-}
-
-
-
-
-///encode titles in calls to other stuff
+Wrapup:
+- Copy test makefile to /movie_chooser
+- Remove /how_to_compile.txt
+- Create SQL for schema

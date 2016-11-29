@@ -1,0 +1,29 @@
+unittest: csmtest tropetest favtest logintest moviedbtest usertest imdbtest listtest moviestest
+
+csmtest:
+	java -classpath "..\lib\mysql-connector-java-5.0.8-bin.jar;../webapps/movie_chooser/WEB-INF/lib/gson-2.8.0.jar;../webapps/movie_chooser/WEB-INF/lib/jsoup-1.10.1.jar;../webapps/movie_chooser/WEB-INF/classes" uci.zainabk.csm.CSMTest
+
+
+tropetest:
+	java -classpath "..\lib\mysql-connector-java-5.0.8-bin.jar;../webapps/movie_chooser/WEB-INF/lib/gson-2.8.0.jar;../webapps/movie_chooser/WEB-INF/lib/jsoup-1.10.1.jar;../webapps/movie_chooser/WEB-INF/classes" uci.zainabk.tvtropes.TVTropeTest
+
+favtest:
+	java -classpath "..\lib\mysql-connector-java-5.0.8-bin.jar;../webapps/movie_chooser/WEB-INF/lib/gson-2.8.0.jar;../webapps/movie_chooser/WEB-INF/lib/jsoup-1.10.1.jar;../webapps/movie_chooser/WEB-INF/classes" uci.zainabk.database.FavTest "Home Alone"
+
+logintest:
+	java -classpath "..\lib\mysql-connector-java-5.0.8-bin.jar;../webapps/movie_chooser/WEB-INF/lib/gson-2.8.0.jar;../webapps/movie_chooser/WEB-INF/lib/jsoup-1.10.1.jar;../webapps/movie_chooser/WEB-INF/classes" uci.zainabk.database.LoginTest 
+
+moviedbtest:
+	java -classpath "..\lib\mysql-connector-java-5.0.8-bin.jar;../webapps/movie_chooser/WEB-INF/lib/gson-2.8.0.jar;../webapps/movie_chooser/WEB-INF/lib/jsoup-1.10.1.jar;../webapps/movie_chooser/WEB-INF/classes" uci.zainabk.database.MovieTest "Home Alone"
+
+usertest:
+	java -classpath "..\lib\mysql-connector-java-5.0.8-bin.jar;../webapps/movie_chooser/WEB-INF/lib/gson-2.8.0.jar;../webapps/movie_chooser/WEB-INF/lib/jsoup-1.10.1.jar;../webapps/movie_chooser/WEB-INF/classes" uci.zainabk.database.UserTest
+
+imdbtest:
+	java -classpath "..\lib\mysql-connector-java-5.0.8-bin.jar;../webapps/movie_chooser/WEB-INF/lib/gson-2.8.0.jar;../webapps/movie_chooser/WEB-INF/lib/jsoup-1.10.1.jar;../webapps/movie_chooser/WEB-INF/classes" uci.zainabk.imdb.Test "Home Alone"
+
+listtest:
+	java -classpath "..\lib\mysql-connector-java-5.0.8-bin.jar;../webapps/movie_chooser/WEB-INF/lib/gson-2.8.0.jar;../webapps/movie_chooser/WEB-INF/lib/jsoup-1.10.1.jar;../webapps/movie_chooser/WEB-INF/classes" uci.zainabk.movies.ListTest
+
+moviestest:
+	java -classpath "..\lib\mysql-connector-java-5.0.8-bin.jar;../webapps/movie_chooser/WEB-INF/lib/gson-2.8.0.jar;../webapps/movie_chooser/WEB-INF/lib/jsoup-1.10.1.jar;../webapps/movie_chooser/WEB-INF/classes" uci.zainabk.movies.Test "Home Alone"
