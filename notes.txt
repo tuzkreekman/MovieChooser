@@ -1,6 +1,7 @@
 To Do:
 - Choose top of suggested based on tropes/ratings
 - Check if needed: encode title in calls to other functions (for url)
+- Seeded suggestions
 
 Possibly:
 - Amazon

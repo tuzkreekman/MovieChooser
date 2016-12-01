@@ -73,7 +73,7 @@
 		} /*if (!seed.equals("")) {
 			
 		}*/
-		ArrayList<MovieSuggestion> movies = new MovieList().getMovies(params.toArray(new String[0]));
+		ArrayList<MovieSuggestion> movies = MovieList.getMovies(params.toArray(new String[0]));
 		for (int i = 0; i <movies.size(); i++) {
 			MovieSuggestion current = movies.get(i);
 			MovieInfo mi = new MovieInfo(current.getTitle(),db);

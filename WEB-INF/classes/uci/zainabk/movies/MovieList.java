@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 
 public class MovieList {
-	public ArrayList<MovieSuggestion> getMovies(String[] args) {
+	public static ArrayList<MovieSuggestion> getMovies(String[] args) {
 		JsonReader reader;
 		ArrayList<MovieSuggestion> suggested = new ArrayList<MovieSuggestion>();
 		

@@ -86,6 +86,7 @@
 			out.println("<h2>General Info</h2>");
 			out.println("<p>MPAA: "+mi.getAgeRating()+"</p>");
 			out.println("<p>CommonSenseMedia: "+((mi.foundCSRating())?mi.getCSAgeRating()+"+":"not found")+"</p>");
+			out.println("<p>Year: "+mi.getYear()+"</p>");
 			
 			out.println("<h2>Reviews</h2>");
 			if (mi.getMetaScore()!=0) out.println("<p>Metacritic "+mi.getMetaScore()+"</p>");

@@ -48,6 +48,12 @@ public class MovieInfo {
 		}
 	}
 	
+	/*	Takes in IMDB id
+		Assumes that movie is in the database */
+	public MovieInfo(String imdb) {
+		iMDB = imdb;
+	}
+	
 	/* 	Takes in title and searches for the IMDB id
 		Adds the movie to the database if it isn't there 
 		Loads all information it can get */
@@ -62,7 +68,7 @@ public class MovieInfo {
 		this.getInfoFromIMDB();
 		this.checkNetflix();
 		this.loadCommonSense();
-		this.loadTropes2();
+		this.loadTropes();
 		this.loadGenres();
 	}
 	
@@ -91,6 +97,12 @@ public class MovieInfo {
 						if (reader.nextString().equals("False")) {
 							a = 0/0;
 						}
+					} else if (name.equals("Type")) {
+						String type= (reader.nextString());
+						if !(type.equals("movie") || type.equals("N/A")) {
+							iMDB = null;
+							a = 0/0;
+						}
 					} else if (name.equals("Poster")) {
 						img = reader.nextString();
 					} else if (name.equals("Title")) {
@@ -104,7 +116,9 @@ public class MovieInfo {
 						if (!meta.contains("N"))
 							year = Integer.parseInt(meta);
 					} else if (name.equals("imdbRating")) {
-						imdbScore = reader.nextDouble();
+						String meta = reader.nextString();
+						if (!meta.contains("N"))
+							imdbScore = Double.parseDouble(meta);
 					} else if (name.equals("Rated")) {
 						ageRating = reader.nextString();
 					} else {
@@ -179,25 +193,6 @@ public class MovieInfo {
 		String url = "";
 		try {
 			url = TVTropeFinder.findTropeURL(title);
-			url = DBTropeLoader.convertURIDB(url);
-		} catch (Exception e) { 
-			tropes = false; 
-			System.out.println("Load trope failed: "+e.getMessage());
-			return;
-		}
-		System.out.println("Loading tropes from "+url);
-		for (Trope t : DBTropeLoader.getFilmTropes(url))
-			tag.add(t.title);
-	}
-	
-	public void loadTropes2() {
-		if (iMDB==null) return;
-		
-		if (tag.indexOf(TROPELESS)!=-1) tag.remove(TROPELESS);
-		tropes = true;
-		String url = "";
-		try {
-			url = TVTropeFinder.findTropeURL(title);
 		} catch (Exception e) { 
 			tropes = false; 
 			System.out.println("Load trope failed: "+e.getMessage());
@@ -222,24 +217,6 @@ public class MovieInfo {
 		}
 		System.out.println("Loading commonsense from "+url);
 		csrating = CommonSenseLoader.getAgeRating(url);
-	}
-	
-	public ArrayList<String> loadTropeURLs() {
-		if (iMDB==null) return null;
-		
-		ArrayList<String> bag = new ArrayList<String>();
-		String url = "";
-		try {
-			url = TVTropeFinder.findTropeURL(title);
-			url = DBTropeLoader.convertURIDB(url);
-		} catch (Exception e) { 
-			System.out.println("Load trope URLs failed: "+e.getMessage());
-			return null;
-		}
-		System.out.println("Loading trope URLs from "+url);
-		for (Trope t : DBTropeLoader.getFilmTropeURLs(url))
-			bag.add(t.title);
-		return bag;
 	}
 	
 	public void loadGenres() {
