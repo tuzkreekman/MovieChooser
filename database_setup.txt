@@ -1,0 +1,31 @@
+I used three tables in a schema called "movie_chooser", defined as follows:
+	CREATE TABLE `faves` (
+	  `user_id` int(11) NOT NULL,
+	  `movie_id` int(11) NOT NULL,
+	  `opinion` tinyint(2) NOT NULL,
+	  PRIMARY KEY (`movie_id`,`user_id`)
+	) DEFAULT CHARSET=utf8;
+
+	CREATE TABLE `movie` (
+	  `movie_id` int(11) NOT NULL AUTO_INCREMENT,
+	  `imdb_id` tinytext NOT NULL,
+	  PRIMARY KEY (`movie_id`)
+	) DEFAULT CHARSET=utf8;
+
+	CREATE TABLE `user` (
+	  `username` varchar(45) NOT NULL,
+	  `user\_id` int(11) NOT NULL AUTO_INCREMENT,
+	  `password` varchar(45) NOT NULL,
+	  PRIMARY KEY (`user_id`)
+	) DEFAULT CHARSET=utf8;
+
+
+My functions to connect to the database assume the log-in info as follows:
+	Username: termproject
+	Password: eecs118tp
+
+Additionally, my tests require that the first user of the service be defined as follows:
+	Username: Ginevra
+	Password: Weasley
+This can also be accomplished by executing the following command when creating the databases:
+	INSERT INTO user VALUES ("Ginevra",default,"Weasley");
