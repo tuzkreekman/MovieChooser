@@ -61,6 +61,8 @@
 		String seed = request.getParameter("seed");
 		MovieList ml = new MovieList();
 		ArrayList<String> params = new ArrayList<String>();
+		boolean seeded = false;
+		int m_id = 0;
 		if (!genre.equals("-1")) {
 			//Genre g = Genre.getGenre(Integer.parseInt(genre));
 			params.add("with_genres");
@@ -70,30 +72,40 @@
 			params.add(age);
 			params.add("certification_country");
 			params.add("US");
-		} /*if (!seed.equals("")) {
-			
-		}*/
-		/*ArrayList<MovieSuggestion> movies = MovieList.getMovies(params.toArray(new String[0]));
-		for (int i = 0; i <movies.size(); i++) {
-			MovieSuggestion current = movies.get(i);
-			MovieInfo mi = new MovieInfo(current.getTitle(),db);
-			Movie m = mi.getMovie();
-			FavDatabase fdb = new FavDatabase(db.getConnection());
-			if (fdb.hasFav(id,m.id)) {
-				movies.remove(i);
-			} else if (i > 10) movies.remove(i);
+		} if (!seed.equals("")) {
+			try {
+				m_id = MovieRecommender.findTMDBID(seed);
+				if (m_id!=0) seeded = true;
+			} catch (Exception e) {
+				System.out.println("Tried to seed, failed");
+				out.println("<p>Sorry, your seed failed. We will ignore it and recommend based on your other parameters.</p>");
+			}
 		}
-		for (MovieSuggestion ms : movies) {
-			String title = ms.getTitle();
-			out.println("<p><a href=\"search.jsp?q="+title+"\">"+title+"</a></p>");
-		}*/
+		
 		try {
-			MovieSuggestion current = MovieRecommender.recommend(params.toArray(new String[0]));
-			MovieInfo mi = new MovieInfo(current.getTitle(), db);
-			out.println("<h1><a href=\"search.jsp?q="+current.getTitle()+"\">"+current.getTitle()+"</a></h1>");
-			out.println("<p><a href=\"like.jsp?q="+mi.getMovie().id+"\">Already love</a></p>");
-			out.println("<p><a href=\"watch.jsp?q="+mi.getMovie().id+"\">Already watched</a></p>");
-			out.println("<p><a href=\"hate.jsp?q="+mi.getMovie().id+"\">Already watched, and hated</a></p>");
+			if (seeded) {
+				try {
+					MovieSuggestion current = MovieRecommender.recommendSimilar(m_id,params.toArray(new String[0]));
+					MovieInfo mi = new MovieInfo(current.getTitle(), db);
+					out.println("<h1><a href=\"search.jsp?q="+current.getTitle()+"\">"+current.getTitle()+"</a></h1>");
+					out.println("<p><a href=\"like.jsp?q="+mi.getMovie().id+"\">Already love</a></p>");
+					out.println("<p><a href=\"watch.jsp?q="+mi.getMovie().id+"\">Already watched</a></p>");
+					out.println("<p><a href=\"hate.jsp?q="+mi.getMovie().id+"\">Already watched, and hated</a></p>");
+				} catch (Exception e) {
+					System.out.println("Failed mid-seed");
+					out.println("<p>Sorry, your seed failed. We will ignore it and recommend based on your other parameters.</p>");
+					seeded = false;
+				}
+				
+			}
+			if (!seeded) {
+				MovieSuggestion current = MovieRecommender.recommend(params.toArray(new String[0]));
+				MovieInfo mi = new MovieInfo(current.getTitle(), db);
+				out.println("<h1><a href=\"search.jsp?q="+current.getTitle()+"\">"+current.getTitle()+"</a></h1>");
+				out.println("<p><a href=\"like.jsp?q="+mi.getMovie().id+"\">Already love</a></p>");
+				out.println("<p><a href=\"watch.jsp?q="+mi.getMovie().id+"\">Already watched</a></p>");
+				out.println("<p><a href=\"hate.jsp?q="+mi.getMovie().id+"\">Already watched, and hated</a></p>");
+			}
 		} catch (Exception e) {
 			out.println("<p>Woops, something broke! Please check the terminal for more info</p>");
 			System.out.println(e.getClass()+" "+e.getMessage());
