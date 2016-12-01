@@ -73,7 +73,7 @@
 		} /*if (!seed.equals("")) {
 			
 		}*/
-		ArrayList<MovieSuggestion> movies = MovieList.getMovies(params.toArray(new String[0]));
+		/*ArrayList<MovieSuggestion> movies = MovieList.getMovies(params.toArray(new String[0]));
 		for (int i = 0; i <movies.size(); i++) {
 			MovieSuggestion current = movies.get(i);
 			MovieInfo mi = new MovieInfo(current.getTitle(),db);
@@ -86,6 +86,13 @@
 		for (MovieSuggestion ms : movies) {
 			String title = ms.getTitle();
 			out.println("<p><a href=\"search.jsp?q="+title+"\">"+title+"</a></p>");
+		}*/
+		try {
+			MovieSuggestion current = MovieRecommender.recommend(params.toArray(new String[0]));
+			out.println("<p><a href=\"search.jsp?q="+current.getTitle()+"\">"+current.getTitle()+"</a></p>");
+		} catch (Exception e) {
+			out.println("<p>Woops, something broke! Please check the terminal for more info</p>");
+			System.out.println(e.getClass()+" "+e.getMessage());
 		}
 	}
   %>

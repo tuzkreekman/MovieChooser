@@ -11,9 +11,13 @@ public class MovieRecommender {
 	public static final int RECOMMENDATION_SIZE = 15;
 	
 	public static void main(String[] args) {
+		recommend(args);
+	}
+	
+	public static MovieSuggestion recommend(String[] params) {
 		Database db = new Database();
 		int id = Login.getUserID();
-		ArrayList<MovieSuggestion> opts = getChoices(id,new String[0],db);
+		ArrayList<MovieSuggestion> opts = getChoices(id,params,db);
 		ArrayList<String> ids = getLoved(id,db);
 		HashSet<String> tropes = getTropes(ids);
 		//for (String trope : getTropes(ids)) System.out.println(trope);
@@ -25,7 +29,7 @@ public class MovieRecommender {
 			ArrayList<String> nT = mi.getTags();
 			nT.retainAll(tropes);
 			score.add(nT.size());
-			//System.out.println(m.getTitle()+": "+nT.size());
+			System.out.println(m.getTitle()+": "+nT.size());
 		}
 		int max = 0;
 		int index = 0;
@@ -35,7 +39,9 @@ public class MovieRecommender {
 				index = i;
 			}
 		}
+		
 		System.out.println(opts.get(index).getTitle()+": "+score.get(index));
+		return opts.get(index);
 	}
 	
 	private static boolean foundTrope(String trope, ArrayList<String> tropes) {
@@ -89,6 +95,10 @@ public class MovieRecommender {
 		for (int i = 0; i <movies.size(); i++) {
 			MovieSuggestion current = movies.get(i);
 			MovieInfo mi = new MovieInfo(current.getTitle(),db);
+			if (mi.getIMDBID()==null) {
+				movies.remove(i);
+				continue;
+			}
 			Movie m = mi.getMovie();
 			FavDatabase fdb = new FavDatabase(db.getConnection());
 			if (fdb.hasFav(id,m.id)) {

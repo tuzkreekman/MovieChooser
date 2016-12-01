@@ -99,7 +99,8 @@ public class MovieInfo {
 						}
 					} else if (name.equals("Type")) {
 						String type= (reader.nextString());
-						if !(type.equals("movie") || type.equals("N/A")) {
+						int a;
+						if (!(type.equals("movie") || type.equals("N/A"))) {
 							iMDB = null;
 							a = 0/0;
 						}

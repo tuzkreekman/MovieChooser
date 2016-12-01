@@ -85,13 +85,16 @@
 			
 			out.println("<h2>General Info</h2>");
 			out.println("<p>MPAA: "+mi.getAgeRating()+"</p>");
-			out.println("<p>CommonSenseMedia: "+((mi.foundCSRating())?mi.getCSAgeRating()+"+":"not found")+"</p>");
-			out.println("<p>Year: "+mi.getYear()+"</p>");
+			out.println("<p>CommonSenseMedia: "+((mi.foundCSRating())?((mi.getCSAgeRating()!=-1)?mi.getCSAgeRating()+"+":"not found"):"not found")+"</p>");
+			int temp = mi.getYear();
+			out.println("<p>Year: "+((temp==0)?"unknown":temp)+"</p>");
 			
 			out.println("<h2>Reviews</h2>");
-			if (mi.getMetaScore()!=0) out.println("<p>Metacritic "+mi.getMetaScore()+"</p>");
+			temp = mi.getMetaScore();
+			if (temp!=0) out.println("<p>Metacritic "+temp+"</p>");
 			else out.println("<p>Metacritic unavailable</p>");
-			out.println("<p>IMDB "+mi.getIMDBScore()+"</p>");
+			double tmp = mi.getIMDBScore();
+			out.println("<p>IMDB "+((tmp!=0)?tmp:"unrated")+"</p>");
 			
 			out.println("<h2>Where to Watch</h2>");
 			out.println("<p>Netflix: "+((mi.isOnNetflix())? "available":"unavailable")+"</p>");
