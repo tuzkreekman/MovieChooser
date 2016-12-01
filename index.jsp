@@ -45,7 +45,7 @@
   <p>The following resources had useful/nonexistent information but useless APIs</p>
   
   <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.commonsensemedia.org/">CommonSenseMedia</a></p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.themoviedb.org/">TVTropes</a></p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tvtropes.org/">TVTropes</a></p>
   <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.themoviedb.org/">DBTropes</a></p>
   
   <p>Also, of course, shoutout to Professor Sheu and TA Bryan Chou. Thanks for an interesting class and a busy, productive quarter.</p>
