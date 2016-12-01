@@ -26,6 +26,7 @@
   
   <h1>Welcome to MovieHunter!</h1>
   
+  
   <h2>How To</h2>
   <p>To search for a movie, search for its title in the search bar above. 
   To keep track of movies seen, and to get personalized recommendations,

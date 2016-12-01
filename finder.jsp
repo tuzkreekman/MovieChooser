@@ -49,7 +49,7 @@
 			<option value="R">R</option>
 		    </select><br>
 		Choose a movie seed:     <input name="seed" type="text"><br>
-		<input type="submit" name="button" value="Explore"><br>
+		<input type="submit" name="button" value="Explore" onclick="show_image()"><br>
 		</form>
   
   <%
@@ -89,13 +89,32 @@
 		}*/
 		try {
 			MovieSuggestion current = MovieRecommender.recommend(params.toArray(new String[0]));
-			out.println("<p><a href=\"search.jsp?q="+current.getTitle()+"\">"+current.getTitle()+"</a></p>");
+			MovieInfo mi = new MovieInfo(current.getTitle(), db);
+			out.println("<h1><a href=\"search.jsp?q="+current.getTitle()+"\">"+current.getTitle()+"</a></h1>");
+			out.println("<p><a href=\"like.jsp?q="+mi.getMovie().id+"\">Already love</a></p>");
+			out.println("<p><a href=\"watch.jsp?q="+mi.getMovie().id+"\">Already watched</a></p>");
+			out.println("<p><a href=\"hate.jsp?q="+mi.getMovie().id+"\">Already watched, and hated</a></p>");
 		} catch (Exception e) {
 			out.println("<p>Woops, something broke! Please check the terminal for more info</p>");
 			System.out.println(e.getClass()+" "+e.getMessage());
 		}
 	}
   %>
+  
+  <script>
+  function show_image()
+  
+{
+	var img = document.createElement("img");
+    img.src = "awkward_smiley.gif";
+    
+
+    // This next line will just add it to the <body> tag
+    document.body.appendChild(img);
+}
+
+  </script>
+  
 
 
   
