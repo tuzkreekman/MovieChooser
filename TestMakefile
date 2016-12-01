@@ -1,4 +1,8 @@
-unittest: csmtest tropetest favtest logintest moviedbtest usertest imdbtest listtest moviestest
+unittest: recommendtest csmtest tropetest favtest logintest moviedbtest usertest imdbtest listtest moviestest
+
+recommendtest:
+	java -classpath "..\lib\mysql-connector-java-5.0.8-bin.jar;../webapps/movie_chooser/WEB-INF/lib/gson-2.8.0.jar;../webapps/movie_chooser/WEB-INF/lib/jsoup-1.10.1.jar;../webapps/movie_chooser/WEB-INF/classes" uci.zainabk.movies.RecommendationTest
+
 
 csmtest:
 	java -classpath "..\lib\mysql-connector-java-5.0.8-bin.jar;../webapps/movie_chooser/WEB-INF/lib/gson-2.8.0.jar;../webapps/movie_chooser/WEB-INF/lib/jsoup-1.10.1.jar;../webapps/movie_chooser/WEB-INF/classes" uci.zainabk.csm.CSMTest
